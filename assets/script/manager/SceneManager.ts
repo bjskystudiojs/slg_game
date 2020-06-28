@@ -43,6 +43,10 @@ export default class SceneManager{
         this._rootNode.addChild(guideLayer);
         this._layers[LayerEnum.GuideLayer] = guideLayer;
     }
+
+    public changeTo(scene:SceneEnum){
+        
+    }
 }
 
 export enum LayerEnum{

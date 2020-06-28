@@ -1,6 +1,5 @@
 
-export default class PlayerData{
-
+export default class RoleModule{
     //用户session
     public sessionId:number = 0;
     //名字

@@ -3,5 +3,11 @@
     "cancelBtn":"取消",
     "loginBtn":"登录",
     "tipTitle":"提示",
-    "tipContentTest":"这是一个提示:{0}"
+    "tipContentTest":"这是一个提示:{0}",
+    "loadingPlatlogin":"平台登录中",
+    "loadingCheckUpdate":"检查更新中",
+    "loadingUpdateGame":"下载更新中({0}%)",
+    "loadingConnectServer":"连接服务器",
+    "loadingLoadRes":"加载资源中({0}%)"
+    
 }

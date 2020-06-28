@@ -1081,6 +1081,12 @@
     "btnlogin": {
       "__id__": 22
     },
+    "lblLoadingTip": {
+      "__id__": 9
+    },
+    "proLoading": {
+      "__id__": 15
+    },
     "_id": "b7IrKTwN1Pyq15rFHY1eSD"
   },
   {

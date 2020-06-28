@@ -7,8 +7,11 @@ import LogUtils from "../utils/LogUtils";
 import LanguageManager, { Language } from "../manager/LanguageManager";
 import { Dialog } from "../manager/DialogManager";
 import { Net } from "../manager/NetManager";
-import { Scene } from "../manager/SceneManager";
+import { Scene, SceneEnum } from "../manager/SceneManager";
 import { Emitter } from "../core/Emitter";
+import PlatformManager from "../manager/PlatformManager";
+import LoadingModule from "../module/LoadingModule";
+import { Module } from "../manager/ModuleManager";
 
 // Learn TypeScript:
 //  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
@@ -24,11 +27,17 @@ export default class LoadingScene extends BaseScene {
 
     @property(BaseButton)
     btnlogin: BaseButton = null;
+    @property(cc.Label)
+    lblLoadingTip: cc.Label = null;
+    @property(cc.ProgressBar)
+    proLoading: cc.ProgressBar = null;
+
+    private mLoading: LoadingModule;
 
     start() {
         LogUtils.isOpen = true;
         LogUtils.showTarget = true;
-        LogUtils.log(this,"##gamestart!","test")
+        LogUtils.log(this, "##gamestart!", "test")
 
         this.initGame();
 
@@ -38,24 +47,60 @@ export default class LoadingScene extends BaseScene {
         let uiRoot: cc.Node = cc.find(GlobalConst.UI_Root_Canvas);
         Scene.initLayers(uiRoot);
         Config.init();
-        Net.init();
+        Module.init();
         Language.init();
-        Emitter.on(LanguageManager.Event_Language_Loaded,this.startGame.bind(this),this);
-
-
+        Emitter.on(LanguageManager.Event_Language_Loaded, this.startGame.bind(this), this);
+        Emitter.on(LoadingModule.Event_Loading_complete, this.enterGame.bind(this), this);
+        Emitter.on(LoadingModule.Event_Loading_TipChange, this.onTipChange.bind(this), this);
+        Emitter.on(LoadingModule.Event_Loading_progress, this.onProgress.bind(this), this);
+        //加个加载逻辑组件
+        this.mLoading = this.node.addComponent(LoadingModule);
         this.btnlogin.node.active = false;
+        this.lblLoadingTip.string = "";
+        this.proLoading.progress = 0;
     }
-    private startGame(){
+    private startGame() {
+        Emitter.off(LanguageManager.Event_Language_Loaded, this.startGame.bind(this), this);
         this.btnlogin.node.active = true;
         this.btnlogin.setString(Language.getString("loginBtn"));
-        this.btnlogin.setTouchClickHandler(this.onBtnLoginClick);
+        this.btnlogin.setTouchClickHandler(this.onBtnLoginClick.bind(this));
+    }
+
+    //进入主场景
+    private enterGame() {
+        Emitter.off(LoadingModule.Event_Loading_complete, this.enterGame.bind(this), this);
+        this.mLoading.dispose();
+        Dialog.removeAll();
+        Scene.changeTo(SceneEnum.MainScene);
+    }
+
+    private onTipChange(evt, tipstr) {
+        this.lblLoadingTip.string = tipstr;
+    }
+
+    private onProgress(evt,pro){
+        this.proLoading.progress = pro;
     }
 
     private onBtnLoginClick() {
         //后面封装成pool
-        let title:string  = Language.getString("tipTitle")
-        let content:string = Language.getString("tipContentTest","test");
-        Dialog.showDialog(ResConst.MessageBoxDialog, title, content);
+        // let title:string  = Language.getString("tipTitle")
+        // let content:string = Language.getString("tipContentTest","test");
+        // Dialog.showDialog(ResConst.MessageBoxDialog, title, content);
+
+        if (this.mLoading) {
+            this.mLoading.startLoading();
+        }
     }
-    // update (dt) {}
+
+    update(dt) {
+
+
+    }
+
+    public dispose() {
+        Emitter.off(LoadingModule.Event_Loading_TipChange, this.onTipChange.bind(this), this);
+        Emitter.off(LoadingModule.Event_Loading_progress, this.onProgress.bind(this), this);
+        
+    }
 }

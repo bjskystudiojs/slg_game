@@ -1,4 +1,4 @@
-import { GameData } from "../model/GameDataCenter";
+import { Module } from "./ModuleManager";
 
 /**
  * 本地存储管理 byliuxin
@@ -33,7 +33,7 @@ export default class LocalStoreManager {
     }
 
     private formatKey(id,type){
-        return (type==1)?("local.system."+id):("local.user." + GameData.player.sessionId+"."+id);
+        return (type==1)?("local.system."+id):("local.user." + Module.role.sessionId+"."+id);
     }
 
     /**

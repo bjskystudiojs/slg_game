@@ -8,13 +8,13 @@ export default class NetManager{
         return this._instance;
     }
 
-    public init(){
-        this.initServerConfig();
+    public connect(server:string,port:number){
+
     }
 
 
-    private initServerConfig(){
-
+    public reconnect(){
+        
     }
 }
 

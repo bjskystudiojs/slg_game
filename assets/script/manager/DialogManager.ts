@@ -84,6 +84,9 @@ export default class DialogManager{
         }
     }
 
+    public removeAll(){
+        
+    }
 
     private addMaskLayer(){
         this._maskLayer = new cc.Node();
