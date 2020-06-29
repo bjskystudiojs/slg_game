@@ -1,17 +1,15 @@
 import BaseScene from "../core/BaseScene";
 import { Config } from "../manager/ConfigManager";
 import BaseButton from "../core/BaseButton";
-import { ResConst } from "../const/ResConst";
 import { GlobalConst } from "../const/GlobalConst";
 import LogUtils from "../utils/LogUtils";
 import LanguageManager, { Language } from "../manager/LanguageManager";
 import { Dialog } from "../manager/DialogManager";
-import { Net } from "../manager/NetManager";
 import { Scene, SceneEnum } from "../manager/SceneManager";
 import { Emitter } from "../core/Emitter";
-import PlatformManager from "../manager/PlatformManager";
 import LoadingModule from "../module/LoadingModule";
 import { Module } from "../manager/ModuleManager";
+import { ResConst } from "../const/ResConst";
 
 // Learn TypeScript:
 //  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
@@ -74,23 +72,25 @@ export default class LoadingScene extends BaseScene {
         Scene.changeTo(SceneEnum.MainScene);
     }
 
-    private onTipChange(evt, tipstr) {
+    private onTipChange(evt,tipstr) {
+        let e = evt;
         this.lblLoadingTip.string = tipstr;
     }
 
     private onProgress(evt,pro){
+        let e = evt;
         this.proLoading.progress = pro;
     }
 
     private onBtnLoginClick() {
         //后面封装成pool
-        // let title:string  = Language.getString("tipTitle")
-        // let content:string = Language.getString("tipContentTest","test");
-        // Dialog.showDialog(ResConst.MessageBoxDialog, title, content);
+        let title:string  = Language.getString("tipTitle")
+        let content:string = Language.getString("tipContentTest","test");
+        Dialog.showDialog(ResConst.MessageBoxDialog, title, content);
 
-        if (this.mLoading) {
-            this.mLoading.startLoading();
-        }
+        // if (this.mLoading) {
+        //     this.mLoading.startLoading();
+        // }
     }
 
     update(dt) {

@@ -3,6 +3,7 @@ import BaseComp from "../core/BaseComp";
 import { ResConst } from "../const/ResConst";
 import LogUtils from "../utils/LogUtils";
 import BaseDialog from "../core/BaseDialog";
+import UIPool from "../core/pool/UIPool";
 
 /**
  * 对象池管理 by liuxin
@@ -13,27 +14,12 @@ export default class PoolManager{
     public static getInstance():PoolManager{
         if(!this._instance){
             this._instance = new PoolManager();
-            // this._instance.initHandler();
         }
         return this._instance;
     }
 
-    //注册unuse/reuse logic.
-    // public initHandler(){
-    //     this.registerHandler(ResConst.MessageBoxDialog,"MessageBoxDialog");
-    // }
-
-    private _pools:any = {};
-    // private _poolHandlers:any = {};
-
-    // /**
-    //  * 注册预制界面的回收复用逻辑组件
-    //  * @param path 路径
-    //  * @param handler 逻辑组件
-    //  */
-    // public registerHandler(path:string,handler:string){
-    //     this._poolHandlers[path] = handler;
-    // }
+    private _pool_ui:UIPool = new UIPool(4);
+    private _pool_node:BasePool = new BasePool();
 
     /**
      * 从对象池取出预制界面实例
@@ -41,15 +27,8 @@ export default class PoolManager{
      * @param cb 回调
      * @param params 初始化参数
      */
-    public spawn(path:string,cb:Function,...params:any[]){
-        let pool:BasePool = this._pools[path];
-        if(!pool){
-            // let handler = this._poolHandlers[path]?this._poolHandlers[path]:null;
-            // pool = new BasePool(path,handler);
-            pool = new BasePool(path);
-            this._pools[path] = pool;
-        }
-        pool.requestNode((node:cc.Node)=>{
+    public spawnUI(path:string,cb:Function,...params:any[]){
+        this._pool_ui.requestNode(path,(node:cc.Node)=>{
             let b = node.getComponent(BaseComp);
             if(!b)
             {
@@ -64,22 +43,17 @@ export default class PoolManager{
         });
     }
 
-    public unspawn(node:cc.Node){
+    public unspawnUI(node:cc.Node){
         var b:BaseComp = node.getComponent(BaseComp);
         if(b && b.path){
-            let pool:BasePool = this._pools[b.path];
-            if(pool){
-                if(b instanceof BaseDialog){
-                    b.onHide(()=>{
-                        b.dispose();
-                        pool.returnNode(node);
-                    });
-                }else{
+            if(b instanceof BaseDialog){
+                b.onHide(()=>{
                     b.dispose();
-                    pool.returnNode(node);
-                }
+                    this._pool_ui.returnNode(b.path,node);
+                });
             }else{
-                LogUtils.warn(this,"node unspawn failed,not has a pool:",b.path);
+                b.dispose();
+                this._pool_ui.returnNode(b.path,node);
             }
         }else{
             LogUtils.warn(this,"node unspawn failed,is not a baseComponent.");

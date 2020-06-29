@@ -24,7 +24,7 @@ export default class DialogManager{
 
     public showDialog(path:string,...args:any[]){
         //从对象池中取个实例出来显示
-        Pool.spawn(path,(node)=>{
+        Pool.spawnUI(path,(node)=>{
             let dialog:BaseDialog = node.getComponent(BaseDialog);
             if(dialog){
                 this.__showDialog(dialog);
@@ -77,7 +77,7 @@ export default class DialogManager{
                 this._dialogStack.splice(dialogIdx,1);
             }
             //回收
-            Pool.unspawn(dialog.node);
+            Pool.unspawnUI(dialog.node);
         }else{
             LogUtils.warn(this,"__closeDialog failed:not open ",dialog.name);
             dialog._zIndex = 0;

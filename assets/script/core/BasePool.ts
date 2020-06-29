@@ -4,19 +4,19 @@ import { RES } from "../manager/ResourceManager";
  * 单个对象池 by liuxin
  */
 export default class BasePool {
-    private _pool:cc.NodePool = null;
-    private _path:string = "";
+    protected _pools:any = {}; //key=>NodePool
 
-    public constructor(path?:string,poolHandler?:string){
-        this._pool = new cc.NodePool(poolHandler);
-        this._path = path;
-    }
+    protected getNode(path:string):cc.Node{
+        if(!this._pools[path]){
+            this._pools[path] = new cc.NodePool();
+            return null;
+        }
 
-    private getNode():cc.Node{
-        if(this._pool.size()>0){
-            let node = this._pool.get();
+        let pool = this._pools[path];
+        if(pool.size()>0){
+            let node = pool.get();
             if(!cc.isValid(node)){
-                return this.getNode();
+                return this.getNode(path);
             }
             return node;
         }else{
@@ -24,31 +24,35 @@ export default class BasePool {
         }
     }
 
-    private putNode(node:cc.Node){
+    protected putNode(path:string,node:cc.Node){
+        if(!this._pools[path]){
+            return;
+        }
+        let pool = this._pools[path];
         if(cc.isValid(node)){
-            this._pool.put(node);
+            pool.put(node);
         }
     }
 
-    public requestNode(cb:Function){
-        let node = this.getNode();
+    public requestNode(path:string,cb:Function){
+        let node = this.getNode(path);
         if(node){
             node.active = true;
             cb && cb(node);
             return;
         }
-        RES.loadAsset(this._path,cc.Prefab,(obj)=>{
+        RES.loadAsset(path,cc.Prefab,(obj)=>{
             node = cc.instantiate(obj);
             node.active = true;
             cb && cb(node);
         })
     }
 
-    public returnNode(node:cc.Node){
+    public returnNode(path:string,node:cc.Node){
         node.active = false;
         if(node.parent){
             node.removeFromParent();
         }
-        this.putNode(node);
+        this.putNode(path,node);
     }
 }
