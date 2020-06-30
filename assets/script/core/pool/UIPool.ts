@@ -12,14 +12,6 @@ export default class UIPool extends BasePool{
         this._maxSize = size;
     }
 
-    private countSize():Number{
-        var size = 0;
-        for(var key in this._pools){
-            size +=this._pools[key].size();
-        }
-        return size;
-    }
-
     protected getNode(path:string):cc.Node{
         if(!this._pools[path]){
             this._pools[path] = new cc.NodePool();

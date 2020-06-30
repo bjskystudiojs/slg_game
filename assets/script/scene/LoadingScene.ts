@@ -9,7 +9,6 @@ import { Scene, SceneEnum } from "../manager/SceneManager";
 import { Emitter } from "../core/Emitter";
 import LoadingModule from "../module/LoadingModule";
 import { Module } from "../manager/ModuleManager";
-import { ResConst } from "../const/ResConst";
 
 // Learn TypeScript:
 //  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
@@ -73,24 +72,21 @@ export default class LoadingScene extends BaseScene {
     }
 
     private onTipChange(evt,tipstr) {
-        let e = evt;
         this.lblLoadingTip.string = tipstr;
     }
 
     private onProgress(evt,pro){
-        let e = evt;
         this.proLoading.progress = pro;
     }
 
     private onBtnLoginClick() {
         //后面封装成pool
-        let title:string  = Language.getString("tipTitle")
-        let content:string = Language.getString("tipContentTest","test");
-        Dialog.showDialog(ResConst.MessageBoxDialog, title, content);
-
-        // if (this.mLoading) {
-        //     this.mLoading.startLoading();
-        // }
+        // let title:string  = Language.getString("tipTitle")
+        // let content:string = Language.getString("tipContentTest","test");
+        // Dialog.showDialog(ResConst.MessageBoxDialog, title, content);
+        if (this.mLoading) {
+            this.mLoading.startLoading();
+        }
     }
 
     update(dt) {

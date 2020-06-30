@@ -1,8 +1,9 @@
 import BaseDialog from "../core/BaseDialog";
-import { Pool } from "./PoolManager";
+import { Pool, PoolTypeEnum } from "./PoolManager";
 import { LayerEnum, Scene } from "./SceneManager";
 import LogUtils from "../utils/LogUtils";
 import { ResConst } from "../const/ResConst";
+import { RES } from "./ResourceManager";
 
 
 /**
@@ -24,7 +25,9 @@ export default class DialogManager{
 
     public showDialog(path:string,...args:any[]){
         //从对象池中取个实例出来显示
-        Pool.spawnUI(path,(node)=>{
+        Pool.spawn(PoolTypeEnum.PoolUI,path,(node)=>{
+            RES.dump();
+            Pool.dump();
             let dialog:BaseDialog = node.getComponent(BaseDialog);
             if(dialog){
                 this.__showDialog(dialog);
@@ -77,15 +80,25 @@ export default class DialogManager{
                 this._dialogStack.splice(dialogIdx,1);
             }
             //回收
-            Pool.unspawnUI(dialog.node);
+            Pool.unspawn(dialog.node);
+            Pool.dump();
         }else{
             LogUtils.warn(this,"__closeDialog failed:not open ",dialog.name);
             dialog._zIndex = 0;
         }
     }
 
+    /**
+     * 移除所有弹窗
+     */
     public removeAll(){
-        
+        while(this._dialogStack.length>1){
+            let dialog:BaseDialog = this._dialogStack.pop();
+            Pool.unspawn(dialog.node);
+        }
+        this._dialogStack = [];
+        this._currentDialog = null;
+        this.removeMaskLayer();
     }
 
     private addMaskLayer(){
@@ -109,8 +122,10 @@ export default class DialogManager{
     }
 
     private removeMaskLayer(){
-        this._maskLayer.destroy();
-        this._maskLayer = null;
+        if(this._maskLayer){
+            this._maskLayer.destroy();
+            this._maskLayer = null;
+        }
     }
 
 }

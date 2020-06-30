@@ -44,6 +44,10 @@ export default class SceneManager{
         this._layers[LayerEnum.GuideLayer] = guideLayer;
     }
 
+    /**
+     * 切换场景
+     * @param scene 场景名
+     */
     public changeTo(scene:SceneEnum){
         
     }

@@ -1,10 +1,18 @@
 import { RES } from "../manager/ResourceManager";
+import LogUtils from "../utils/LogUtils";
 
 /**
  * 单个对象池 by liuxin
  */
 export default class BasePool {
     protected _pools:any = {}; //key=>NodePool
+    public countSize():number{
+        var size = 0;
+        for(var key in this._pools){
+            size +=this._pools[key].size();
+        }
+        return size;
+    }
 
     protected getNode(path:string):cc.Node{
         if(!this._pools[path]){
@@ -54,5 +62,28 @@ export default class BasePool {
             node.removeFromParent();
         }
         this.putNode(path,node);
+    }
+
+    /**
+     * 清空对象池并释放资源
+     */
+    public clear(){
+        for(let key in this._pools)
+        {
+            var pool = this._pools[key];
+            while(pool.size()>0){
+                let node:cc.Node = pool.get();
+                node.destroy();
+            }
+            pool.clear();
+            delete this._pools[key];
+        }
+    }
+
+    public dump():void{
+        for(let key in this._pools)
+        {
+            LogUtils.log(this,'key:'+key+',size:'+this._pools[key].size()+'\n');
+        }
     }
 }

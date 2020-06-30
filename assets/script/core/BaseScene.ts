@@ -1,3 +1,5 @@
+import { Pool } from "../manager/PoolManager";
+
 // Learn TypeScript:
 //  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
 // Learn Attribute:
@@ -14,16 +16,23 @@ export default class BaseScene extends cc.Component {
 
     // onLoad () {}
 
-    public reload(){
-        
+    /**
+     * 初始化场景
+     */
+    public init(){
+
+    }
+    
+    /**
+     * 主动卸载场景
+     */
+    public dispose(){
+
     }
 
-    public enter(){
-
-    }
-
-    public exit(){
-        
+    onDestroy(){
+        //清除对象池
+        Pool.clear();
     }
 
     // update (dt) {}

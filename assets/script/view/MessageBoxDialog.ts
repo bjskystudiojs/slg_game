@@ -1,6 +1,5 @@
 import BaseButton from "../core/BaseButton";
 import PopupDialog from "./PopupDialog";
-import LogUtils from "../utils/LogUtils";
 import { Dialog } from "../manager/DialogManager";
 import { ResConst } from "../const/ResConst";
 import { Language } from "../manager/LanguageManager";
