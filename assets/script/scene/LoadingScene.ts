@@ -9,6 +9,8 @@ import { Scene, SceneEnum } from "../manager/SceneManager";
 import { Emitter } from "../core/Emitter";
 import LoadingModule from "../module/LoadingModule";
 import { Module } from "../manager/ModuleManager";
+import { TouchTypeEnum } from "../core/TouchDelegate";
+import { ResConst } from "../const/ResConst";
 
 // Learn TypeScript:
 //  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
@@ -60,7 +62,7 @@ export default class LoadingScene extends BaseScene {
         Emitter.off(LanguageManager.Event_Language_Loaded, this.startGame.bind(this), this);
         this.btnlogin.node.active = true;
         this.btnlogin.setString(Language.getString("loginBtn"));
-        this.btnlogin.setTouchClickHandler(this.onBtnLoginClick.bind(this));
+        this.btnlogin.addTouchHandler(TouchTypeEnum.TouchClick,this.onBtnLoginClick.bind(this));
     }
 
     //进入主场景
@@ -81,12 +83,12 @@ export default class LoadingScene extends BaseScene {
 
     private onBtnLoginClick() {
         //后面封装成pool
-        // let title:string  = Language.getString("tipTitle")
-        // let content:string = Language.getString("tipContentTest","test");
-        // Dialog.showDialog(ResConst.MessageBoxDialog, title, content);
-        if (this.mLoading) {
-            this.mLoading.startLoading();
-        }
+        let title:string  = Language.getString("tipTitle")
+        let content:string = Language.getString("tipContentTest","test");
+        Dialog.showDialog(ResConst.MessageBoxDialog, title, content);
+        // if (this.mLoading) {
+        //     this.mLoading.startLoading();
+        // }
     }
 
     update(dt) {
@@ -97,6 +99,6 @@ export default class LoadingScene extends BaseScene {
     public dispose() {
         Emitter.off(LoadingModule.Event_Loading_TipChange, this.onTipChange.bind(this), this);
         Emitter.off(LoadingModule.Event_Loading_progress, this.onProgress.bind(this), this);
-        
+        this.btnlogin.removeAllHandler();
     }
 }

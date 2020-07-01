@@ -3,6 +3,7 @@ import PopupDialog from "./PopupDialog";
 import { Dialog } from "../manager/DialogManager";
 import { ResConst } from "../const/ResConst";
 import { Language } from "../manager/LanguageManager";
+import { TouchTypeEnum } from "../core/TouchDelegate";
 
 // Learn TypeScript:
 //  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
@@ -57,13 +58,16 @@ export default class MessageBoxDialog extends PopupDialog {
 
         this.btnYes.setString(Language.getString("comfirmBtn"));
         this.btnNo.setString(Language.getString("cancelBtn"));
-        this.btnYes.setTouchClickHandler(this.touchClick.bind(this));
-        this.btnNo.setTouchClickHandler(this.touchClose.bind(this));
+        this.btnYes.addTouchHandler(TouchTypeEnum.TouchClick,this.touchClick.bind(this));
+        this.btnNo.addTouchHandler(TouchTypeEnum.TouchClick,this.touchClose.bind(this));
 
     }
 
     public dispose(){
+        this.btnYes.removeTouchHandler(TouchTypeEnum.TouchClick);
+        this.btnNo.removeTouchHandler(TouchTypeEnum.TouchClick);
         this.btnYes.dispose();
+        this.btnNo.dispose();
     }
 
     // start() {

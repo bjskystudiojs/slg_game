@@ -16,12 +16,12 @@ export default class DragableScene extends BaseScene{
     public init(){
         super.init();
         this.touchDelegate = new TouchDelegate();
-        this.touchDelegate.listen(this.touchLayer,this);
+        this.touchDelegate.listen(this.touchLayer);
 
     }
 
-    public onTouchClick(){
-        
+    public onTouchClick(evt){
+
     }
 
     public dispose(){
