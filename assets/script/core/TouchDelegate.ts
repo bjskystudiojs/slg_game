@@ -3,34 +3,30 @@
  */
 export default class TouchDelegate {
 
-    //点击
-    public static Notice_Touch_Click = "Notice_Touch_Click";
-    //双击，应该不用
-    public static Notice_Touch_DoubleClick = "Notice_Touch_DoubleClick";
-    //长按下
-    public static Notice_Touch_LongTimePress = "Notice_Touch_LongTimePress";
-
-    public listen(target: cc.Node) {
-        if(this._targetNode)
+    public listen(target:cc.Node, eventTarget: any) {
+        if (this._target)
             return;
-        this._targetNode = target;
-        this._targetNode.on(cc.Node.EventType.TOUCH_START, this.onTouchCallback, this);
-        this._targetNode.on(cc.Node.EventType.TOUCH_MOVE, this.onTouchCallback, this);
-        this._targetNode.on(cc.Node.EventType.TOUCH_END, this.onTouchCallback, this);
-        this._targetNode.on(cc.Node.EventType.TOUCH_CANCEL, this.onTouchCallback, this);
+        this._target = target;
+        this._eventTarget = eventTarget;
+        this._target.on(cc.Node.EventType.TOUCH_START, this.onTouchCallback, this);
+        this._target.on(cc.Node.EventType.TOUCH_MOVE, this.onTouchCallback, this);
+        this._target.on(cc.Node.EventType.TOUCH_END, this.onTouchCallback, this);
+        this._target.on(cc.Node.EventType.TOUCH_CANCEL, this.onTouchCallback, this);
     }
 
     public unlisten() {
-        if(!this._targetNode)
+        if (!this._target)
             return;
-        this._targetNode.off(cc.Node.EventType.TOUCH_START, this.onTouchCallback, this);
-        this._targetNode.off(cc.Node.EventType.TOUCH_MOVE, this.onTouchCallback, this);
-        this._targetNode.off(cc.Node.EventType.TOUCH_END, this.onTouchCallback, this);
-        this._targetNode.off(cc.Node.EventType.TOUCH_CANCEL, this.onTouchCallback, this);
-        this._targetNode = null;
+        this._target.off(cc.Node.EventType.TOUCH_START, this.onTouchCallback, this);
+        this._target.off(cc.Node.EventType.TOUCH_MOVE, this.onTouchCallback, this);
+        this._target.off(cc.Node.EventType.TOUCH_END, this.onTouchCallback, this);
+        this._target.off(cc.Node.EventType.TOUCH_CANCEL, this.onTouchCallback, this);
+        this._target = null;
+        this._eventTarget = null;
     }
 
-    private _targetNode: cc.Node = null;
+    private _target: cc.Node = null;
+    private _eventTarget: any = null;
 
     private onTouchCallback(evt) {
         switch (evt.type) {
@@ -48,7 +44,8 @@ export default class TouchDelegate {
         }
     }
     private onTouchClickHandler(evt) {
-        //射出去
-        this._targetNode.emit(TouchDelegate.Notice_Touch_Click, evt);
+        if(this._eventTarget && this._eventTarget.onTouchClick){
+            this._eventTarget.onTouchClick(evt);
+        }
     }
 }

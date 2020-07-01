@@ -28,13 +28,11 @@ export default class BaseButton extends cc.Button {
     }
 
     public addListener(){
-        this._touchDelegate.listen(this.node);
-        this.node.on(TouchDelegate.Notice_Touch_Click, this.onNoticeTouchClick, this);
+        this._touchDelegate.listen(this.node,this);
 
     }
     public removeListener(){
         this._touchDelegate && this._touchDelegate.unlisten();
-        this.node.off(TouchDelegate.Notice_Touch_Click, this.onNoticeTouchClick, this);
     }
 
     public dispose() {
@@ -42,7 +40,7 @@ export default class BaseButton extends cc.Button {
         this._touchClickHandler = null;
     }
 
-    private onNoticeTouchClick(evt) {
+    public onTouchClick(evt) {
         this._touchClickHandler && this._touchClickHandler(evt);
     }
     /**
