@@ -83,7 +83,7 @@ export default class BasePool {
     public dump():void{
         for(let key in this._pools)
         {
-            LogUtils.log(this,'key:'+key+',size:'+this._pools[key].size()+'\n');
+            LogUtils.log(this,'key:'+key+',size:'+this._pools[key].size()+'');
         }
     }
 }

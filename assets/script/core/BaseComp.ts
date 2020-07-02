@@ -47,7 +47,6 @@ export default class BaseComp extends cc.Component {
         if(this.path){
             RES.release(this.path);
         }
-        RES.dump();
     }
 
     update(dt) {

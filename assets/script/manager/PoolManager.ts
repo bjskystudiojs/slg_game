@@ -94,7 +94,7 @@ export default class PoolManager{
 
 
     public dump():void{
-        let str:string = "******** POOL dump ********\n";
+        let str:string = "******** POOL dump ********";
         LogUtils.log(this,str);
         var size:number = 0;
         for(let i=1;i<=PoolTypeEnum.PoolUI;i++)
@@ -102,12 +102,12 @@ export default class PoolManager{
             var pool = this.getPool(i);
             if(pool){
                 let poolname:PoolTypeEnum = PoolTypeEnum[i] as any;
-                LogUtils.log(this,'>>>>>>> '+poolname+' <<<<<<\n');
+                LogUtils.log(this,'>>>>>>> '+poolname+' <<<<<<');
                 pool.dump();
                 size += pool.countSize();
             }
         }
-        LogUtils.log(this,'******** total size:'+size+' ********\n');
+        LogUtils.log(this,'******** total size:'+size+' ********');
     }
 }
 

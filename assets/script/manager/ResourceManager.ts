@@ -1,5 +1,6 @@
 import LogUtils from "../utils/LogUtils";
 import { isString } from "../utils/CommonUtil";
+import { SceneEnum } from "./SceneManager";
 
 /**
  * 资源管理 by liuxin
@@ -17,7 +18,7 @@ export default class ResourceManager{
     private persist: {[index:string]: number}={};
 
     /** 对asset所关联的资源进行计数 */
-    countAsset(asset):void{
+    private countAsset(asset):void{
         
         var deps = cc.loader.getDependsRecursively(asset);
         let self = this;
@@ -30,6 +31,20 @@ export default class ResourceManager{
             }
             else{
                 self.persist[element]=1;
+            }
+        }
+    }
+    public countSceneAsset(scene:cc.Scene){
+        let deps = scene['dependAssets'];
+        if(!deps) return;
+        for (var i = 0; i < deps.length; ++i) {
+            if(this.persist[deps[i]])
+            {
+                // let num = this.persist[element];
+                this.persist[deps[i]]++;
+            }
+            else{
+                this.persist[deps[i]]=1;
             }
         }
     }
@@ -50,6 +65,30 @@ export default class ResourceManager{
             this.countAsset(res);
             cb && cb(res);
         });
+    }
+
+    public loadScene(sceneName:SceneEnum,cb:Function){
+        cc.director.loadScene(sceneName,(err, scene)=>{
+            if(err){
+                LogUtils.error(this,"loadScene failed,message:"+err.message);
+                return;
+            }
+            this.countSceneAsset(scene);
+            cb && cb();
+        });
+    }
+
+    public releaseSceneAsset(deps:any){
+        for (let i = 0; i < deps.length; ++i) {
+            var persistDep = this.persist[deps[i]];
+            if(!persistDep || --persistDep < 1) {
+                cc.loader.release(deps[i]);
+                delete this.persist[deps[i]];
+                continue;
+            }
+            this.persist[deps[i]]=persistDep;
+        }
+        
     }
 
     /**
@@ -104,15 +143,15 @@ export default class ResourceManager{
     }
 
     public dump():void{
-        let str:string = "******** RES dump ********\n";
+        let str:string = "******** RES dump ********";
         LogUtils.log(this,str);
         let count =0;
         for(let key in this.persist)
         {
             count+=this.persist[key];
-            LogUtils.log(this,'key:'+key+',count:'+this.persist[key]+'\n');
+            LogUtils.log(this,'key:'+key+',count:'+this.persist[key]+'');
         }
-        LogUtils.log(this,'******** total:'+count+'\n');
+        LogUtils.log(this,'******** total:'+count+'');
     }
     
 }

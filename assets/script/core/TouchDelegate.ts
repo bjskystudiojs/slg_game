@@ -29,7 +29,7 @@ export default class TouchDelegate {
     private _target: cc.Node = null;
     
     private onTouchStart(evt){
-        
+        cc.log(evt.type);
     }
     private onTouchMove(evt){
 
@@ -41,7 +41,7 @@ export default class TouchDelegate {
         
     }
 
-    private _touchHandlerMap:any = null;
+    private _touchHandlerMap:any = {};
 
     /**
      * 添加一个touch事件监听
@@ -76,7 +76,7 @@ export default class TouchDelegate {
      * 移除所有事件监听
      */
     public removeAllHandler(){
-        this._touchHandlerMap = null;
+        this._touchHandlerMap = {};
     }
 
 

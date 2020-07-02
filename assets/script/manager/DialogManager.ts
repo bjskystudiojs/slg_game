@@ -26,8 +26,6 @@ export default class DialogManager{
     public showDialog(path:string,...args:any[]){
         //从对象池中取个实例出来显示
         Pool.spawn(PoolTypeEnum.PoolUI,path,(node)=>{
-            RES.dump();
-            Pool.dump();
             let dialog:BaseDialog = node.getComponent(BaseDialog);
             if(dialog){
                 this.__showDialog(dialog);
@@ -81,7 +79,6 @@ export default class DialogManager{
             }
             //回收
             Pool.unspawn(dialog.node);
-            Pool.dump();
         }else{
             LogUtils.warn(this,"__closeDialog failed:not open ",dialog.name);
             dialog._zIndex = 0;

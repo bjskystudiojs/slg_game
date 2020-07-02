@@ -4,6 +4,8 @@ import { Dialog } from "../manager/DialogManager";
 import { ResConst } from "../const/ResConst";
 import { Language } from "../manager/LanguageManager";
 import { TouchTypeEnum } from "../core/TouchDelegate";
+import { Scene } from "../manager/SceneManager";
+import LoadingScene from "../scene/LoadingScene";
 
 // Learn TypeScript:
 //  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
@@ -44,9 +46,15 @@ export default class MessageBoxDialog extends PopupDialog {
 
     public touchClick() {
 
-        let title:string  = Language.getString("tipTitle")
-        let content:string = Language.getString("tipContentTest","test");
-        Dialog.showDialog(ResConst.MessageBoxDialog, title, content);
+        // let title:string  = Language.getString("tipTitle")
+        // let content:string = Language.getString("tipContentTest","test");
+        // Dialog.showDialog(ResConst.MessageBoxDialog, title, content);
+
+        var scene = Scene.currentScene as LoadingScene;
+        if (scene && scene.mLoading) {
+            scene.mLoading.startLoading();
+        }
+        this.close();
     }
     public touchClose(){
         this.close();

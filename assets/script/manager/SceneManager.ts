@@ -1,4 +1,7 @@
 import BaseScene from "../core/BaseScene";
+import LogUtils from "../utils/LogUtils";
+import SceneTransfer from "../scene/SceneTransfer";
+import { RES } from "./ResourceManager";
 
 
 /**
@@ -18,11 +21,28 @@ export default class SceneManager{
     public get rootNode():cc.Node{
         return this._rootNode;
     }
+    /**
+     * BaseScene组件
+     */
     public currentScene:BaseScene;
+    /**
+     * 原生场景对象
+     */
+    public currentSceneNative(){
+        let cur_scene:cc.Scene = cc.director.getScene();
+        return cur_scene;
+    }
 
     private _layers = {};
     public getLayer(layer:LayerEnum):cc.Node{
         return this._layers[layer];
+    }
+
+    public setFirstScene(scene:BaseScene){
+        //第一个场景要手动设置
+        var sceneNt = this.currentSceneNative();
+        RES.countSceneAsset(sceneNt);
+        this.currentScene = scene;
     }
 
     public initLayers(root:cc.Node){
@@ -48,8 +68,32 @@ export default class SceneManager{
      * 切换场景
      * @param scene 场景名
      */
-    public changeTo(scene:SceneEnum){
-        
+    public changeTo(sceneName:SceneEnum){
+        let oldScene = this.currentScene;
+        let transfer:SceneTransfer = new SceneTransfer(oldScene.name,sceneName);
+        transfer.exitTransfer(()=>{
+            //卸载旧场景
+            oldScene.dispose();
+            let oldSceneNt = this.currentSceneNative();
+            let oldAsset = oldSceneNt['dependAssets'];
+            RES.loadScene(sceneName,() =>{
+                //释放旧场景资源
+                RES.releaseSceneAsset(oldAsset);
+                //设置新场景
+                let newSceneNt = this.currentSceneNative();
+                let scene_root = newSceneNt.children[0];
+                let newScene:BaseScene = scene_root.getComponent(BaseScene);
+                if(newScene){
+                    this.currentScene = newScene;
+                    newScene.init();
+                }
+                transfer.enterTransfer(()=>{
+                    if(newScene){
+                        newScene.show();
+                    }
+                });
+            });
+        });
     }
 }
 
@@ -63,7 +107,7 @@ export enum LayerEnum{
 
 export enum SceneEnum{
     LoadingScene = "LoadingScene" ,
-    MainScene = "MainScene" ,
+    CityScene = "CityScene" ,
     WorldScene = "WorldScene" ,
 }
 

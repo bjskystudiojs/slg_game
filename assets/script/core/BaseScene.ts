@@ -1,4 +1,6 @@
 import { Pool } from "../manager/PoolManager";
+import { SceneEnum } from "../manager/SceneManager";
+import LogUtils from "../utils/LogUtils";
 
 // Learn TypeScript:
 //  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
@@ -16,10 +18,19 @@ export default class BaseScene extends cc.Component {
 
     // onLoad () {}
 
+    public name:SceneEnum;
+
     /**
      * 初始化场景
      */
     public init(){
+
+    }
+
+    /**
+     * 切换场景动画完成
+     */
+    public show(){
 
     }
     
@@ -33,6 +44,7 @@ export default class BaseScene extends cc.Component {
     onDestroy(){
         //清除对象池
         Pool.clear();
+        LogUtils.log(this,"scene onDestoryed:pool clear");
     }
 
     // update (dt) {}

@@ -1,5 +1,7 @@
 import BaseScene from "./BaseScene";
-import TouchDelegate from "./TouchDelegate";
+import TouchDelegate, { TouchTypeEnum } from "./TouchDelegate";
+import { RES } from "../manager/ResourceManager";
+import { Pool } from "../manager/PoolManager";
 
 const { ccclass, property } = cc._decorator;
 
@@ -17,16 +19,17 @@ export default class DragableScene extends BaseScene{
         super.init();
         this.touchDelegate = new TouchDelegate();
         this.touchDelegate.listen(this.touchLayer);
-
+        this.touchDelegate.addTouchHandler(TouchTypeEnum.TouchClick,this.onTouchClick);
     }
 
     public onTouchClick(evt){
-
+        Pool.dump();
+        RES.dump();
     }
 
     public dispose(){
         super.dispose();
         this.touchDelegate.unlisten();
-        this.touchDelegate = null;
+        this.touchDelegate.removeAllHandler();
     }
 }

@@ -11,6 +11,7 @@ import LoadingModule from "../module/LoadingModule";
 import { Module } from "../manager/ModuleManager";
 import { TouchTypeEnum } from "../core/TouchDelegate";
 import { ResConst } from "../const/ResConst";
+import { Pool } from "../manager/PoolManager";
 
 // Learn TypeScript:
 //  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
@@ -31,13 +32,15 @@ export default class LoadingScene extends BaseScene {
     @property(cc.ProgressBar)
     proLoading: cc.ProgressBar = null;
 
-    private mLoading: LoadingModule;
+    public mLoading: LoadingModule;
 
     start() {
         LogUtils.isOpen = true;
         LogUtils.showTarget = true;
         LogUtils.log(this, "##gamestart!", "test")
 
+        this.name  = SceneEnum.LoadingScene;
+        Scene.setFirstScene(this);
         this.initGame();
 
     }
@@ -70,7 +73,7 @@ export default class LoadingScene extends BaseScene {
         Emitter.off(LoadingModule.Event_Loading_complete, this.enterGame.bind(this), this);
         this.mLoading.dispose();
         Dialog.removeAll();
-        Scene.changeTo(SceneEnum.MainScene);
+        Scene.changeTo(SceneEnum.CityScene);
     }
 
     private onTipChange(evt,tipstr) {
@@ -86,9 +89,6 @@ export default class LoadingScene extends BaseScene {
         let title:string  = Language.getString("tipTitle")
         let content:string = Language.getString("tipContentTest","test");
         Dialog.showDialog(ResConst.MessageBoxDialog, title, content);
-        // if (this.mLoading) {
-        //     this.mLoading.startLoading();
-        // }
     }
 
     update(dt) {
