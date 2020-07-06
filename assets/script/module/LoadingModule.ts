@@ -3,6 +3,7 @@ import { Platform } from "../manager/PlatformManager";
 import { Emitter } from "../core/Emitter";
 import { Language } from "../manager/LanguageManager";
 import HotUpdater from "../utils/HotUpdater";
+import { Config } from "../manager/ConfigManager";
 
 export default class LoadingModule extends BaseComp {
     public static Event_Loading_complete: string = "Event_Loading_complete";
@@ -43,8 +44,10 @@ export default class LoadingModule extends BaseComp {
             totalPro = 0.1 + pro * 0.15;
         } else if (state == LoadingStateEnum.ConnectServer) {
             totalPro = 0.25 + pro * 0.15;
-        } else if (state == LoadingStateEnum.LoadRES) {
-            totalPro = 0.4 + pro * 0.6;
+        } else if (state == LoadingStateEnum.LoadCfg) {
+            totalPro = 0.4 + pro * 0.05;
+        }else if (state == LoadingStateEnum.LoadRES) {
+            totalPro = 0.45 + pro * 0.55;
         }
         Emitter.emit(LoadingModule.Event_Loading_progress, totalPro);
     }
@@ -73,6 +76,7 @@ export default class LoadingModule extends BaseComp {
  * 登录状态枚举
  */
 export enum LoadingStateEnum {
+    LoadCfg = "loadCfg",        //加载配置
     LoadRES = "loadRes",        //加载资源
     PlatLogin = "platLogin",    //平台登录
     ConnectServer = "connectServer",    //连接服务器
@@ -182,7 +186,7 @@ export class LoadingConnectServer extends LoadingState {
 
     private connectSucess() {
         this.setProgress(100);
-        this._module.setState(new LoadingLoadRes(this._module));
+        this._module.setState(new LoadingLoadConfig(this._module));
     }
 
     private connectFailed() {
@@ -191,6 +195,36 @@ export class LoadingConnectServer extends LoadingState {
     public exit() {
         super.exit();
         clearTimeout(this._timeout);
+    }
+}
+
+/**
+ * 连接服务器状态
+ */
+export class LoadingLoadConfig extends LoadingState {
+    constructor(module: LoadingModule) {
+        super(module);
+        this.state = LoadingStateEnum.ConnectServer;
+    }
+    public enter() {
+        this._module.setTip(Language.getString("loadingConfig"));
+        Config.init(this.loadSuccess.bind(this));
+    }
+
+    private loadSuccess() {
+        this.onSucess();
+    }
+
+    private onSucess() {
+        this.setProgress(100);
+        this._module.setState(new LoadingLoadRes(this._module));
+    }
+
+    private onFailed() {
+        this._module.setState(new LoadingLoadConfig(this._module));
+    }
+    public exit() {
+        super.exit();
     }
 }
 

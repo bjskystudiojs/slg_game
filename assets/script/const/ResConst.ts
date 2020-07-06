@@ -7,6 +7,9 @@ export var ResConst = {
     CN_Json:"Lang/cn.json",
     EN_Json:"Lang/en.json",
 
+    //配置
+    Config_List_Json:"Config/list.json",
+
     //spirteframe
     Default_Splash_Sprite:"UI/default_sprite_splash",
 

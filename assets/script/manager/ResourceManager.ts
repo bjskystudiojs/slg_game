@@ -17,46 +17,58 @@ export default class ResourceManager{
     //资源计数
     private persist: {[index:string]: number}={};
 
+    private get defaultBundle():cc.AssetManager.Bundle{
+        return cc.assetManager.getBundle("resources");
+    }
+
     /** 对asset所关联的资源进行计数 */
     private countAsset(asset):void{
-        
-        var deps = cc.loader.getDependsRecursively(asset);
-        let self = this;
-        for (let index = 0; index < deps.length; index++) {
-            const element = deps[index];
-            if(self.persist[element])
-            {
-                // let num = self.persist[element];
-                self.persist[element]++;
-            }
-            else{
-                self.persist[element]=1;
-            }
+        if(asset instanceof cc.Prefab ||asset instanceof cc.SpriteFrame
+            ||asset instanceof cc.AnimationClip 
+            ){
+                asset.addRef();
+            // var deps = cc.loader.getDependsRecursively(asset);
+            // let self = this;
+            // for (let index = 0; index < deps.length; index++) {
+            //     const element = deps[index];
+            //     if(self.persist[element])
+            //     {
+            //         // let num = self.persist[element];
+            //         self.persist[element]++;
+            //     }
+            //     else{
+            //         self.persist[element]=1;
+            //     }
+            // }
         }
     }
+    /**
+     * 切换场景的时候底层已经做了增加引用
+     * @param scene 
+     */
     public countSceneAsset(scene:cc.Scene){
-        let deps = scene['dependAssets'];
-        if(!deps) return;
-        for (var i = 0; i < deps.length; ++i) {
-            if(this.persist[deps[i]])
-            {
-                // let num = this.persist[element];
-                this.persist[deps[i]]++;
-            }
-            else{
-                this.persist[deps[i]]=1;
-            }
-        }
+        // let deps = scene['dependAssets'];
+        // if(!deps) return;
+        // for (var i = 0; i < deps.length; ++i) {
+        //     if(this.persist[deps[i]])
+        //     {
+        //         // let num = this.persist[element];
+        //         this.persist[deps[i]]++;
+        //     }
+        //     else{
+        //         this.persist[deps[i]]=1;
+        //     }
+        // }
     }
 
     public loadAsset(path:string,type:typeof cc.Asset,cb:Function):any{
-        let res:any = cc.loader.getRes(path, type);
+        let res:any = this.defaultBundle.get(path, type);
         if(res){
             this.countAsset(res);
             cb && cb(res);
             return;
         }
-        cc.loader.loadRes(path, type, (err:any, res:any):void=>{
+        this.defaultBundle.load(path, type, (err:any, res:any):void=>{
             if(err)
             {
                 cc.warn("[ResourceManager]loadAsset error", path);
@@ -79,15 +91,15 @@ export default class ResourceManager{
     }
 
     public releaseSceneAsset(deps:any){
-        for (let i = 0; i < deps.length; ++i) {
-            var persistDep = this.persist[deps[i]];
-            if(!persistDep || --persistDep < 1) {
-                cc.loader.release(deps[i]);
-                delete this.persist[deps[i]];
-                continue;
-            }
-            this.persist[deps[i]]=persistDep;
-        }
+        // for (let i = 0; i < deps.length; ++i) {
+        //     var persistDep = this.persist[deps[i]];
+        //     if(!persistDep || --persistDep < 1) {
+        //         cc.loader.release(deps[i]);
+        //         delete this.persist[deps[i]];
+        //         continue;
+        //     }
+        //     this.persist[deps[i]]=persistDep;
+        // }
         
     }
 
@@ -95,17 +107,22 @@ export default class ResourceManager{
      * 
      * @param res 
      */
-    private releaseRes(res) {
-        var deps = cc.loader.getDependsRecursively(res);
-        for (let i = 0; i < deps.length; ++i) {
-            var persistDep = this.persist[deps[i]];
-            if(!persistDep || --persistDep < 1) {
-                cc.loader.release(deps[i]);
-                delete this.persist[deps[i]];
-                continue;
-            }
-            this.persist[deps[i]]=persistDep;
+    private releaseRes(asset) {
+        if(asset instanceof cc.Prefab ||asset instanceof cc.SpriteFrame
+            ||asset instanceof cc.AnimationClip 
+            ){
+                asset.decRef();
         }
+        // var deps = cc.loader.getDependsRecursively(res);
+        // for (let i = 0; i < deps.length; ++i) {
+        //     var persistDep = this.persist[deps[i]];
+        //     if(!persistDep || --persistDep < 1) {
+        //         cc.loader.release(deps[i]);
+        //         delete this.persist[deps[i]];
+        //         continue;
+        //     }
+        //     this.persist[deps[i]]=persistDep;
+        // }
         
     }
 
@@ -128,13 +145,13 @@ export default class ResourceManager{
             
         }
         else if (isString(urlOrAssetOrNode)){
-            let prefab = cc.loader.getRes(urlOrAssetOrNode);
+            let prefab = this.defaultBundle.get(urlOrAssetOrNode);
             if(prefab)
                 this.releaseRes(prefab);
         }
         else
         {
-            let asset = cc.loader.getRes(urlOrAssetOrNode);
+            let asset = this.defaultBundle.get(urlOrAssetOrNode);
             if(asset){
                 this.releaseRes(asset);
             }
@@ -145,12 +162,13 @@ export default class ResourceManager{
     public dump():void{
         let str:string = "******** RES dump ********";
         LogUtils.log(this,str);
-        let count =0;
-        for(let key in this.persist)
-        {
-            count+=this.persist[key];
-            LogUtils.log(this,'key:'+key+',count:'+this.persist[key]+'');
-        }
+        let count:number = 0;
+        cc.assetManager.assets.forEach((asset,key)=>{
+            if(asset.refCount>0){
+                LogUtils.log(this,'key:'+key+',count:'+asset.refCount+'');
+                count+= asset.refCount;
+            }
+        })
         LogUtils.log(this,'******** total:'+count+'');
     }
     

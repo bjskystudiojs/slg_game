@@ -12,8 +12,6 @@ const { ccclass, property } = cc._decorator;
 export default class DragableScene extends BaseScene{
 
     @property(cc.Node)
-    touchLayer: cc.Node = null;
-    @property(cc.Node)
     mapLayer: cc.Node = null;
 
     private touchDelegate:TouchDelegate = null;
@@ -26,7 +24,7 @@ export default class DragableScene extends BaseScene{
     public init(){
         super.init();
         this.touchDelegate = new TouchDelegate();
-        this.touchDelegate.listen(this.touchLayer);
+        this.touchDelegate.listen(this.node);
         this.touchDelegate.addTouchHandler(TouchTypeEnum.TouchClick,this.onTouchClick.bind(this));
         this.touchDelegate.addTouchHandler(TouchTypeEnum.TouchMove,this.onTouchMove.bind(this));
         this.touchDelegate.addTouchHandler(TouchTypeEnum.TouchZoom,this.onTouchZoom.bind(this));
@@ -36,8 +34,8 @@ export default class DragableScene extends BaseScene{
     }
 
     protected onTouchClick(pos){
-        // Pool.dump();
-        // RES.dump();
+        Pool.dump();
+        RES.dump();
     }
 
     protected onTouchMove(offset){

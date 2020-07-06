@@ -48,7 +48,7 @@ export default class LoadingScene extends BaseScene {
     private initGame() {
         let uiRoot: cc.Node = cc.find(GlobalConst.UI_Root_Canvas);
         Scene.initLayers(uiRoot);
-        Config.init();
+        Config.initServer();
         Module.init();
         Language.init();
         Emitter.on(LanguageManager.Event_Language_Loaded, this.startGame.bind(this), this);

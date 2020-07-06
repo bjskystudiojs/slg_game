@@ -106,8 +106,8 @@ export default class DialogManager{
         this._maskLayer.setContentSize(640,1134);
         var maskSpr:cc.Sprite = this._maskLayer.addComponent(cc.Sprite);
         maskSpr.sizeMode = cc.Sprite.SizeMode.CUSTOM;
-        cc.loader.loadRes(ResConst.Default_Splash_Sprite,cc.SpriteFrame,(error,res)=>{
-            maskSpr.spriteFrame = res;
+        RES.loadAsset(ResConst.Default_Splash_Sprite,cc.SpriteFrame,(res)=>{
+            maskSpr.spriteFrame = res as any;
         });
         this._maskLayer.addComponent(cc.BlockInputEvents);
         let dialogRoot = Scene.getLayer(LayerEnum.DialogLayer);

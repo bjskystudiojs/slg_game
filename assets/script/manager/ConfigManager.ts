@@ -7,9 +7,20 @@ export default class ConfgManager{
         }
         return this._instance;
     }
+    private _data:any ={};
+    private _dataInit:boolean = false;
 
-    public init() {
-        
+    public init(success:Function,failed?:Function) {
+        if(this._dataInit){
+            success();
+        }else{
+            let listJson:any;
+            success();
+        }
+    }
+
+    public initServer(){
+
     }
 }
 

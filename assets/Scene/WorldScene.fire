@@ -171,7 +171,7 @@
       "array": [
         0,
         0,
-        328.2236280343023,
+        329.95567884187113,
         0,
         0,
         0,
@@ -282,6 +282,7 @@
       "__id__": 2
     },
     "_enabled": true,
+    "mapLayer": null,
     "_id": "99JBlJ1GNEVqBzVJUuVnEJ"
   }
 ]

@@ -74,11 +74,11 @@ export default class SceneManager{
         transfer.exitTransfer(()=>{
             //卸载旧场景
             oldScene.dispose();
-            let oldSceneNt = this.currentSceneNative();
-            let oldAsset = oldSceneNt['dependAssets'];
+            // let oldSceneNt = this.currentSceneNative();
+            // let oldAsset = oldSceneNt['dependAssets'];
             RES.loadScene(sceneName,() =>{
                 //释放旧场景资源
-                RES.releaseSceneAsset(oldAsset);
+                // RES.releaseSceneAsset(oldAsset);
                 //设置新场景
                 let newSceneNt = this.currentSceneNative();
                 let scene_root = newSceneNt.children[0];
