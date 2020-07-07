@@ -1,8 +1,8 @@
 import BaseScene from "./BaseScene";
 import TouchDelegate, { TouchTypeEnum } from "./TouchDelegate";
 import { RES } from "../manager/ResourceManager";
-import { Pool } from "../manager/PoolManager";
 import LogUtils from "../utils/LogUtils";
+import { Dialog } from "../manager/DialogManager";
 
 const { ccclass, property } = cc._decorator;
 
@@ -34,7 +34,7 @@ export default class DragableScene extends BaseScene{
     }
 
     protected onTouchClick(pos){
-        Pool.dump();
+        Dialog.dumpPool();
         RES.dump();
     }
 

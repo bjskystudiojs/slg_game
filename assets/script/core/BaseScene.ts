@@ -1,6 +1,6 @@
-import { Pool } from "../manager/PoolManager";
 import { SceneEnum } from "../manager/SceneManager";
 import LogUtils from "../utils/LogUtils";
+import { Dialog } from "../manager/DialogManager";
 
 // Learn TypeScript:
 //  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
@@ -43,7 +43,8 @@ export default class BaseScene extends cc.Component {
 
     onDestroy(){
         //清除对象池
-        Pool.clear();
+        Dialog.dumpPool();
+        Dialog.clearPool();
         LogUtils.log(this,"scene onDestoryed:pool clear");
     }
 

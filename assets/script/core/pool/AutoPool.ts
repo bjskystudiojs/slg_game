@@ -1,9 +1,10 @@
 import BasePool from "../BasePool";
 
 /**
- * 单个对象池 by liuxin
+ * 自动释放对象池 by liuxin
+ * @description 超过最大数量自动释放的对象池
  */
-export default class UIPool extends BasePool{
+export default class AutoPool extends BasePool{
     //ui缓存的总数
     private _maxSize:number = 0;
     private _poolKeys:Array<string> = [];

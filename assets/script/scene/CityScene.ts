@@ -1,27 +1,24 @@
 import DragableScene from "../core/DragableScene";
+import CityMap from "./CityMap";
 
 const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class CityScene extends DragableScene {
-    public init(){
+    public init() {
         super.init();
 
-        this.initMap();
-        this.initUI();
-    }
-    
-
-    private initMap(){
-
+        this._map = this.mapLayer.getComponent(CityMap);
+        if (!this._map) {
+            this._map = this.mapLayer.addComponent(CityMap);
+        }
+        this._map.initMap();
     }
 
-    private initUI(){
-        
-    }
+    private _map: CityMap;
 
-    public dispose(){
+    public dispose() {
         super.dispose();
-
+        this._map.dispose();
     }
 }

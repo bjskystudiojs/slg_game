@@ -11,7 +11,6 @@ import LoadingModule from "../module/LoadingModule";
 import { Module } from "../manager/ModuleManager";
 import { TouchTypeEnum } from "../core/TouchDelegate";
 import { ResConst } from "../const/ResConst";
-import { Pool } from "../manager/PoolManager";
 
 // Learn TypeScript:
 //  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html

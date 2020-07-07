@@ -1,5 +1,4 @@
 import BaseScene from "../core/BaseScene";
-import LogUtils from "../utils/LogUtils";
 import SceneTransfer from "../scene/SceneTransfer";
 import { RES } from "./ResourceManager";
 

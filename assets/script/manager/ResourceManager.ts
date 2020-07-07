@@ -17,9 +17,6 @@ export default class ResourceManager{
     //资源计数
     private persist: {[index:string]: number}={};
 
-    private get defaultBundle():cc.AssetManager.Bundle{
-        return cc.assetManager.getBundle("resources");
-    }
 
     /** 对asset所关联的资源进行计数 */
     private countAsset(asset):void{
@@ -62,16 +59,17 @@ export default class ResourceManager{
     }
 
     public loadAsset(path:string,type:typeof cc.Asset,cb:Function):any{
-        let res:any = this.defaultBundle.get(path, type);
+        let res:any = cc.resources.get(path, type);
         if(res){
             this.countAsset(res);
             cb && cb(res);
             return;
         }
-        this.defaultBundle.load(path, type, (err:any, res:any):void=>{
+        cc.resources.load(path, type, (err:any, res:any):void=>{
             if(err)
             {
                 cc.warn("[ResourceManager]loadAsset error", path);
+                cb && cb(null,err);
                 return;
             }
             this.countAsset(res);
@@ -112,6 +110,7 @@ export default class ResourceManager{
             ||asset instanceof cc.AnimationClip 
             ){
                 asset.decRef();
+                asset = null;
         }
         // var deps = cc.loader.getDependsRecursively(res);
         // for (let i = 0; i < deps.length; ++i) {
@@ -145,13 +144,13 @@ export default class ResourceManager{
             
         }
         else if (isString(urlOrAssetOrNode)){
-            let prefab = this.defaultBundle.get(urlOrAssetOrNode);
+            let prefab = cc.resources.get(urlOrAssetOrNode);
             if(prefab)
                 this.releaseRes(prefab);
         }
         else
         {
-            let asset = this.defaultBundle.get(urlOrAssetOrNode);
+            let asset = cc.resources.get(urlOrAssetOrNode);
             if(asset){
                 this.releaseRes(asset);
             }

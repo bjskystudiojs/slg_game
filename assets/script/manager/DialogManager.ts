@@ -1,9 +1,10 @@
 import BaseDialog from "../core/BaseDialog";
-import { Pool, PoolTypeEnum } from "./PoolManager";
 import { LayerEnum, Scene } from "./SceneManager";
 import LogUtils from "../utils/LogUtils";
 import { ResConst } from "../const/ResConst";
 import { RES } from "./ResourceManager";
+import AutoPool from "../core/pool/AutoPool";
+import { NodeMng } from "./NodeManager";
 
 
 /**
@@ -22,10 +23,11 @@ export default class DialogManager{
     private _maskLayer:cc.Node = null;
     private _dialogStack:Array<BaseDialog> = [];
     private _currentDialog:BaseDialog = null;
+    private _dialogPool:AutoPool = new AutoPool(4);
 
     public showDialog(path:string,...args:any[]){
         //从对象池中取个实例出来显示
-        Pool.spawn(PoolTypeEnum.PoolUI,path,(node)=>{
+        NodeMng.spawnWithPool(this._dialogPool,path,(node)=>{
             let dialog:BaseDialog = node.getComponent(BaseDialog);
             if(dialog){
                 this.__showDialog(dialog);
@@ -78,7 +80,7 @@ export default class DialogManager{
                 this._dialogStack.splice(dialogIdx,1);
             }
             //回收
-            Pool.unspawn(dialog.node);
+            NodeMng.unspawn(dialog.node);
         }else{
             LogUtils.warn(this,"__closeDialog failed:not open ",dialog.name);
             dialog._zIndex = 0;
@@ -91,7 +93,7 @@ export default class DialogManager{
     public removeAll(){
         while(this._dialogStack.length>1){
             let dialog:BaseDialog = this._dialogStack.pop();
-            Pool.unspawn(dialog.node);
+            NodeMng.unspawn(dialog.node);
         }
         this._dialogStack = [];
         this._currentDialog = null;
@@ -125,6 +127,13 @@ export default class DialogManager{
         }
     }
 
+    public dumpPool(){
+        this._dialogPool.dump();
+    }
+
+    public clearPool(){
+        this._dialogPool.clear();
+    }
 }
 
 export var Dialog = DialogManager.getInstance();

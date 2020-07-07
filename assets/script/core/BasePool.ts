@@ -2,7 +2,8 @@ import { RES } from "../manager/ResourceManager";
 import LogUtils from "../utils/LogUtils";
 
 /**
- * 单个对象池 by liuxin
+ * 管理多个预设的对象池 by liuxin
+ * @description 不用了调用clear释放
  */
 export default class BasePool {
     protected _pools:any = {}; //key=>NodePool
@@ -81,9 +82,15 @@ export default class BasePool {
     }
 
     public dump():void{
+        let str:string = "******** POOL dump ********";
+        LogUtils.log(this,str);
+        var size:number = 0;
         for(let key in this._pools)
         {
             LogUtils.log(this,'key:'+key+',size:'+this._pools[key].size()+'');
+            size += this._pools[key].size();
         }
+        LogUtils.log(this,'******** total size:'+size+' ********');
+
     }
 }

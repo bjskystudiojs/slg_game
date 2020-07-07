@@ -1,5 +1,5 @@
-import { PoolTypeEnum } from "../manager/PoolManager";
 import { RES } from "../manager/ResourceManager";
+import BasePool from "./BasePool";
 
 const {ccclass, property} = cc._decorator;
 
@@ -15,7 +15,7 @@ export default class BaseComp extends cc.Component {
 
     //预设路径,
     public path:string ="";
-    public pooltype:PoolTypeEnum = 1;
+    public poolRef:BasePool = null;
     // LIFE-CYCLE CALLBACKS:
     onLoad () {
 
@@ -44,6 +44,7 @@ export default class BaseComp extends cc.Component {
      * 释放资源
      */
     onDestroy(){
+        this.poolRef = null;
         if(this.path){
             RES.release(this.path);
         }

@@ -4,6 +4,7 @@ import { Emitter } from "../core/Emitter";
 import { Language } from "../manager/LanguageManager";
 import HotUpdater from "../utils/HotUpdater";
 import { Config } from "../manager/ConfigManager";
+import { Module } from "../manager/ModuleManager";
 
 export default class LoadingModule extends BaseComp {
     public static Event_Loading_complete: string = "Event_Loading_complete";
@@ -42,10 +43,10 @@ export default class LoadingModule extends BaseComp {
             totalPro = pro * 0.1;
         } else if (state == LoadingStateEnum.PlatLogin) {
             totalPro = 0.1 + pro * 0.15;
-        } else if (state == LoadingStateEnum.ConnectServer) {
-            totalPro = 0.25 + pro * 0.15;
         } else if (state == LoadingStateEnum.LoadCfg) {
-            totalPro = 0.4 + pro * 0.05;
+            totalPro = 0.25 + pro * 0.05;
+        } else if (state == LoadingStateEnum.ConnectServer) {
+            totalPro = 0.3 + pro * 0.15;
         }else if (state == LoadingStateEnum.LoadRES) {
             totalPro = 0.45 + pro * 0.55;
         }
@@ -127,7 +128,7 @@ export class LoadingPlatLogin extends LoadingState {
 
     private loginSuccess() {
         this.setProgress(100);
-        this._module.setState(new LoadingConnectServer(this._module))
+        this._module.setState(new LoadingLoadConfig(this._module))
     }
 
     private loginFailed() {
@@ -181,12 +182,13 @@ export class LoadingConnectServer extends LoadingState {
     }
 
     private connectTest() {
+        Module.building.initBuildingData();
         this.connectSucess();
     }
 
     private connectSucess() {
         this.setProgress(100);
-        this._module.setState(new LoadingLoadConfig(this._module));
+        this._module.setState(new LoadingLoadRes(this._module));
     }
 
     private connectFailed() {
@@ -199,7 +201,7 @@ export class LoadingConnectServer extends LoadingState {
 }
 
 /**
- * 连接服务器状态
+ * 加载客户端
  */
 export class LoadingLoadConfig extends LoadingState {
     constructor(module: LoadingModule) {
@@ -217,7 +219,7 @@ export class LoadingLoadConfig extends LoadingState {
 
     private onSucess() {
         this.setProgress(100);
-        this._module.setState(new LoadingLoadRes(this._module));
+        this._module.setState(new LoadingConnectServer(this._module));
     }
 
     private onFailed() {
