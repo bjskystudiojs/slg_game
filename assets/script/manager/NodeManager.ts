@@ -1,5 +1,4 @@
 import BasePool from "../core/BasePool";
-import BaseComp from "../core/BaseComp";
 import BaseDialog from "../core/BaseDialog";
 import LogUtils from "../utils/LogUtils";
 import { RES } from "./ResourceManager";
@@ -78,12 +77,131 @@ export default class NodeManager{
                 }
             }else{  //普通的comp
                 b.dispose();
-                b.destroy();
+                node.destroy();
             }
         }else{
             LogUtils.warn(this,"node unspawn failed,is not a baseComponent.");
         }
     }
 }
+
+/**
+ * 基础组件
+ * @description 统一初始化和清理接口:init/dispose、资源卸载，支持加载其他资源的方法
+ * @file 放在NodeManager里面是因为Ts循环引用的问题
+ */
+export class BaseComp extends cc.Component {
+    protected delayTime: number = 0;
+    protected delayTimeForMin: number = 0;
+    protected tickEnable: boolean = false;
+
+    //预设路径,
+    public path:string ="";
+    public poolRef:BasePool = null;
+    // LIFE-CYCLE CALLBACKS:
+    onLoad () {
+
+    }
+
+    start () {
+
+    }
+
+    /**
+     * 初始化数据
+     * @param params 参数
+     */
+    public init(...params:any[]) {
+        
+    }
+
+    /**
+     * 清理组件逻辑
+     */
+    public dispose(){
+    }
+
+    /**
+     * 更换图片
+     * @param path 图片路径
+     * @param sp 图片对象
+     * @param cb 回调
+     */
+    protected loadSprite(path:string, sp:cc.Sprite, cb?:Function){
+        RES.loadAsset(path, cc.SpriteFrame, (spriteframe,err)=>{
+            if (!err && sp) {
+                sp.spriteFrame = spriteframe;
+            }
+            if(cb){
+                cb(err?null:spriteframe);
+            }
+        });
+    }
+
+    /**
+     * 加载预设
+     * @param path 预设路径
+     * @param cb 回调
+     */
+    protected loadPrefab(path:string,cb:Function){
+        NodeMng.spawn(path,(instant)=>{
+            cb && cb(instant);
+        });
+    }
+
+    /**
+     * 加载预设到节点
+     * @param path 预设路径
+     * @param parent 父节点
+     * @param params 预设初始化参数
+     */
+    protected loadPrefabToParent(path:string,parent:cc.Node,...params:any[]){
+        NodeMng.spawn(path,cc.Prefab,(instant)=>{
+            if(parent && instant && cc.isValid(parent)){
+                parent.addChild(instant);
+            }
+        },...params);
+    }
+
+    /**
+     * 释放资源
+     */
+    onDestroy(){
+        this.poolRef = null;
+        if(this.path){
+            RES.release(this.path);
+        }
+    }
+
+    update(dt) {
+
+        if (!this.tickEnable) {
+            return;
+        }
+
+        // secTick
+        this.delayTime += dt;
+        if (this.delayTime >= 1) {
+            this.tick(this.delayTime);
+            this.delayTime = 0;
+        }
+        // minTick
+        this.delayTimeForMin += dt;
+        if (this.delayTimeForMin >= 60) {
+            this.minTick(this.delayTimeForMin);
+            this.delayTimeForMin = 0;
+        }
+
+    }
+
+    // 每秒执行
+    protected tick(dt) {
+    }
+    // 每分执行一次
+    protected minTick(dt) {
+    }
+    // update (dt) {}
+}
+
 
 export var NodeMng:NodeManager = NodeManager.getInstance();

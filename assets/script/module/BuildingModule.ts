@@ -39,10 +39,10 @@ export default class BuildingModule{
 
     public getBuildingConfig(buildingId?:number):any{
         let cfg = this.buildingCfg;
-        if(buildingId){
-            return cfg.get(buildingId);
-        }else{
+        if(isNaN(buildingId)){
             return cfg;
+        }else{
+            return cfg.get(buildingId);
         }
     }
 }

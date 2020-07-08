@@ -1,10 +1,10 @@
-import BaseComp from "../core/BaseComp";
 import { Platform } from "../manager/PlatformManager";
 import { Emitter } from "../core/Emitter";
 import { Language } from "../manager/LanguageManager";
 import HotUpdater from "../utils/HotUpdater";
 import { Config } from "../manager/ConfigManager";
 import { Module } from "../manager/ModuleManager";
+import { BaseComp } from "../manager/NodeManager";
 
 export default class LoadingModule extends BaseComp {
     public static Event_Loading_complete: string = "Event_Loading_complete";

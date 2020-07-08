@@ -60,7 +60,7 @@
     "_is3DNode": true,
     "_groupIndex": 0,
     "groupIndex": 0,
-    "autoReleaseAssets": false,
+    "autoReleaseAssets": true,
     "_id": "e8ab0b4d-4e01-4f32-824f-adf57e70222b"
   },
   {
@@ -177,7 +177,7 @@
       "array": [
         0,
         0,
-        328.2236280343023,
+        329.95567884187113,
         0,
         0,
         0,
@@ -476,6 +476,8 @@
         "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
       }
     ],
+    "_srcBlendFactor": 770,
+    "_dstBlendFactor": 771,
     "_useOriginalSize": false,
     "_string": "Loading...",
     "_N$string": "Loading...",
@@ -788,7 +790,7 @@
         1,
         1,
         1,
-        1
+        0
       ]
     },
     "_eulerAngles": {
@@ -881,6 +883,8 @@
         "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
       }
     ],
+    "_srcBlendFactor": 770,
+    "_dstBlendFactor": 771,
     "_useOriginalSize": false,
     "_string": "label",
     "_N$string": "label",

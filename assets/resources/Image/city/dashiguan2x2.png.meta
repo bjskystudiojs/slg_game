@@ -1,0 +1,36 @@
+{
+  "ver": "2.3.5",
+  "uuid": "0b074aef-8f9d-489c-91f5-31e1d9f81533",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 440,
+  "height": 510,
+  "platformSettings": {},
+  "subMetas": {
+    "dashiguan2x2": {
+      "ver": "1.0.4",
+      "uuid": "f05c98c1-b8cd-475f-89c0-bfd96f880829",
+      "rawTextureUuid": "0b074aef-8f9d-489c-91f5-31e1d9f81533",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": -23,
+      "offsetY": 54.5,
+      "trimX": 42,
+      "trimY": 66,
+      "width": 310,
+      "height": 269,
+      "rawWidth": 440,
+      "rawHeight": 510,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

@@ -1,13 +1,16 @@
-import BaseComp from "../core/BaseComp";
 import BuildingNode from "../view/building/BuildingNode";
 import { Module } from "../manager/ModuleManager";
+import { ResConst } from "../const/ResConst";
+import LogUtils from "../utils/LogUtils";
+import { BaseComp } from "../manager/NodeManager";
 
 const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class CityMap extends BaseComp{
 
-    private _buildings:Map<number,BuildingNode>;
+    private buildings:Map<number,BuildingNode>;
+    private buildCount:number = 0;
 
     private zFieldItems:number = 1;
     private zBuilding:number = 2;
@@ -34,15 +37,41 @@ export default class CityMap extends BaseComp{
     }
 
     private initBuilding(){
-        this._buildings = new Map();
+        this.buildings = new Map();
         let buildingData = Module.building.testBuildingData;
-        for(var key in buildingData){
+
+        this.buildCount = Object.keys(buildingData).length;
+        for(var id in buildingData){
+            let bid = Number(id);
+            this.loadPrefab(ResConst.BuildingNode,(node:cc.Node)=>{
+                this.layerBuilding.addChild(node);
+                let data = buildingData[bid];
+                node.setPosition(this.logicPosToMapPos(data.pos))
+                let building:BuildingNode = node.getComponent(BuildingNode);
+                building.init(bid,data.id);
+                this.buildings.set(bid,building);
+                if(this.buildCount == this.buildings.size){
+                    LogUtils.log(this,"building load finish,count:"+this.buildCount);
+                }
+            });
         }
     }
 
+    public logicPosToMapPos(logicPos:cc.Vec2):cc.Vec2{
+        return logicPos.multiplyScalar(200);
+    }
+    public mapPosToLogicPos(mapPos:cc.Vec2):cc.Vec2{
+        let logicPos = mapPos.multiplyScalar(1/200);
+        let x = ~~(logicPos.x);
+        let y = ~~(logicPos.y);
+        return cc.v2(x,y)
+    }
+
     public dispose(){
-        this._buildings.forEach((node:BuildingNode,id:number)=>{
-            node.dispose();
+        this.buildings.forEach((comp:BuildingNode,id:number)=>{
+            comp.dispose();
+            comp.node.destroy();
         })
+        this.buildings = null;
     }
 }

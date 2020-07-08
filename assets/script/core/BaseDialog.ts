@@ -1,5 +1,5 @@
-import BaseComp from "./BaseComp";
 import { Dialog } from "../manager/DialogManager";
+import { BaseComp } from "../manager/NodeManager";
 
 // Learn TypeScript:
 //  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
