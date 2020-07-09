@@ -234,7 +234,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "0c94bec8-9137-49b6-9342-f1301e6badf4"
+      "__uuid__": "c4fe1f4f-95a6-429a-bf6c-da5d41dd9d1e"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -247,7 +247,9 @@
     "_fillStart": 0,
     "_fillRange": 0,
     "_isTrimmedMode": true,
-    "_atlas": null,
+    "_atlas": {
+      "__uuid__": "c95ed933-d7b1-4d41-973a-bbaafec1343d"
+    },
     "_id": ""
   },
   {
@@ -549,7 +551,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "53f7a010-2685-4209-b09d-ab623cfb79b8"
+      "__uuid__": "4b25120a-7534-42b4-a557-a580a863fd9b"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -562,7 +564,9 @@
     "_fillStart": 0,
     "_fillRange": 0,
     "_isTrimmedMode": true,
-    "_atlas": null,
+    "_atlas": {
+      "__uuid__": "c95ed933-d7b1-4d41-973a-bbaafec1343d"
+    },
     "_id": ""
   },
   {
@@ -771,7 +775,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "03c66219-2a7c-4e77-8a32-3cdbd932585d"
+      "__uuid__": "16071d16-5f64-4c24-8205-e141ca73a9b9"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -784,7 +788,9 @@
     "_fillStart": 0,
     "_fillRange": 0,
     "_isTrimmedMode": true,
-    "_atlas": null,
+    "_atlas": {
+      "__uuid__": "c95ed933-d7b1-4d41-973a-bbaafec1343d"
+    },
     "_id": ""
   },
   {
@@ -878,7 +884,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "be441128-158d-4a83-b676-4c63db92758c"
+      "__uuid__": "425eb6b5-15a4-40ef-bd65-6ad6991fb93c"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -891,7 +897,9 @@
     "_fillStart": 0,
     "_fillRange": 0,
     "_isTrimmedMode": true,
-    "_atlas": null,
+    "_atlas": {
+      "__uuid__": "c95ed933-d7b1-4d41-973a-bbaafec1343d"
+    },
     "_id": ""
   },
   {
@@ -985,7 +993,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "97489efe-9095-45d4-a780-549573910437"
+      "__uuid__": "2f8cf385-c832-424b-a9e5-e1d1f6283c66"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -998,7 +1006,9 @@
     "_fillStart": 0,
     "_fillRange": 0,
     "_isTrimmedMode": true,
-    "_atlas": null,
+    "_atlas": {
+      "__uuid__": "c95ed933-d7b1-4d41-973a-bbaafec1343d"
+    },
     "_id": ""
   },
   {

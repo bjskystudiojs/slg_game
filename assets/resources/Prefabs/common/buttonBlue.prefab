@@ -64,7 +64,7 @@
         1,
         1,
         1,
-        1
+        0
       ]
     },
     "_eulerAngles": {
@@ -157,6 +157,8 @@
         "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
       }
     ],
+    "_srcBlendFactor": 770,
+    "_dstBlendFactor": 771,
     "_useOriginalSize": false,
     "_string": "label",
     "_N$string": "label",
@@ -203,7 +205,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "1eeec941-38e4-4154-a005-3b0a5af24d04"
+      "__uuid__": "7a6254fd-91f5-4f46-a2f6-96b748758eac"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -216,7 +218,9 @@
     "_fillStart": 0,
     "_fillRange": 0,
     "_isTrimmedMode": true,
-    "_atlas": null,
+    "_atlas": {
+      "__uuid__": "bb264f49-2889-4cda-885d-1c1f0edd3237"
+    },
     "_id": ""
   },
   {
