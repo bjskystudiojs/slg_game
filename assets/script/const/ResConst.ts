@@ -14,7 +14,7 @@ export var ResConst = {
 
     //buidling
     BuildingNode:"Prefabs/city/buildingNode",
-    BuildingPic:"UI/building/",
+    BuildingAtlas:"UI/building",
 
     //mainui
     MainUI:"Prefabs/view/mainUI",
