@@ -1,8 +1,8 @@
 import BuildingNode from "../view/building/BuildingNode";
 import { Module } from "../manager/ModuleManager";
+import { BaseComp } from "../core/BaseComp";
 import { ResConst } from "../const/ResConst";
 import LogUtils from "../utils/LogUtils";
-import { BaseComp } from "../manager/NodeManager";
 
 const { ccclass, property } = cc._decorator;
 
@@ -67,11 +67,12 @@ export default class CityMap extends BaseComp{
         return cc.v2(x,y)
     }
 
-    public dispose(){
-        this.buildings.forEach((comp:BuildingNode,id:number)=>{
-            comp.dispose();
-            comp.node.destroy();
-        })
-        this.buildings = null;
+    onDispose(){
+        super.onDispose();
+        // this.buildings.forEach((comp:BuildingNode,id:number)=>{
+        //     comp.dispose();
+        //     comp.node.destroy();
+        // })
+        // this.buildings = null;
     }
 }

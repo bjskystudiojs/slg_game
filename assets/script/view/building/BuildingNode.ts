@@ -1,6 +1,6 @@
-import { BaseComp } from "../../manager/NodeManager";
 import { Module } from "../../manager/ModuleManager";
 import { ResConst } from "../../const/ResConst";
+import { BaseComp } from "../../core/BaseComp";
 
 const { ccclass, property } = cc._decorator;
 
@@ -19,11 +19,7 @@ export default class BuildingNode extends BaseComp {
         this.buildingId = bid;
         this.buildingTypeId = tid;
         let cfg = Module.building.getBuildingConfig(tid);
-        let pic = ResConst.BuildingPic + cfg.pic;
-        this.loadSprite(pic,null,(spr:cc.SpriteFrame)=>{
-            if(spr){
-                this.sprNode.getComponent(cc.Sprite).spriteFrame = spr;
-            }
-        });
+        let spr = this.sprNode.getComponent(cc.Sprite);
+        this.loadSpriteAtlas(cfg.pic,ResConst.BuildingAtlas,spr);
     }
 }

@@ -1,7 +1,5 @@
 import BaseButton from "../core/BaseButton";
 import PopupDialog from "./PopupDialog";
-import { Dialog } from "../manager/DialogManager";
-import { ResConst } from "../const/ResConst";
 import { Language } from "../manager/LanguageManager";
 import { TouchTypeEnum } from "../core/TouchDelegate";
 import { Scene } from "../manager/SceneManager";
@@ -71,7 +69,7 @@ export default class MessageBoxDialog extends PopupDialog {
 
     }
 
-    public dispose(){
+    onDispose(){
         this.btnYes.removeTouchHandler(TouchTypeEnum.TouchClick);
         this.btnNo.removeTouchHandler(TouchTypeEnum.TouchClick);
         this.btnYes.dispose();

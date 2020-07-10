@@ -4,7 +4,7 @@ import LogUtils from "../utils/LogUtils";
 import { ResConst } from "../const/ResConst";
 import { RES } from "./ResourceManager";
 import AutoPool from "../core/pool/AutoPool";
-import { NodeMng } from "./NodeManager";
+import { BaseComp } from "../core/BaseComp";
 
 
 /**
@@ -27,14 +27,22 @@ export default class DialogManager{
 
     public showDialog(path:string,...args:any[]){
         //从对象池中取个实例出来显示
-        NodeMng.spawnWithPool(this._dialogPool,path,(node)=>{
-            let dialog:BaseDialog = node.getComponent(BaseDialog);
-            if(dialog){
-                this.__showDialog(dialog);
-            }else{
-                LogUtils.warn(this,"__showDialog failed:is not a dialog ",dialog.name);
+        this._dialogPool.requestNode(path,(node:cc.Node)=>{
+            let b = node.getComponent(BaseComp);
+            if(!b)
+            {
+                b = node.addComponent(BaseComp);
             }
-        },...args);
+            b.path = path;
+            b.poolRef = this._dialogPool;
+            b.init(...args)
+            if(b instanceof BaseDialog){
+                b.onShow();
+                this.__showDialog(b);
+            }else{
+                LogUtils.warn(this,"__showDialog failed:is not a dialog ",b.name);
+            }
+        });
     }
 
     private __showDialog(dialog:BaseDialog){
@@ -57,7 +65,10 @@ export default class DialogManager{
     public closeDialog(node:cc.Node){
         let dialog:BaseDialog = node.getComponent(BaseDialog);
         if(dialog){
-            this.__closeDialog(dialog);
+            //回收
+            dialog.onHide(()=>{
+                this.__closeDialog(dialog);
+            });
         }else{
             LogUtils.warn(this,"__closeDialog failed:is not a dialog ",dialog.name);
         }
@@ -79,8 +90,7 @@ export default class DialogManager{
                 //只是移除
                 this._dialogStack.splice(dialogIdx,1);
             }
-            //回收
-            NodeMng.unspawn(dialog.node);
+            dialog.dispose();
         }else{
             LogUtils.warn(this,"__closeDialog failed:not open ",dialog.name);
             dialog._zIndex = 0;
@@ -93,7 +103,7 @@ export default class DialogManager{
     public removeAll(){
         while(this._dialogStack.length>1){
             let dialog:BaseDialog = this._dialogStack.pop();
-            NodeMng.unspawn(dialog.node);
+            dialog.dispose();
         }
         this._dialogStack = [];
         this._currentDialog = null;

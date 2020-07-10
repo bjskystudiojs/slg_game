@@ -1,6 +1,7 @@
 import { SceneEnum } from "../manager/SceneManager";
 import LogUtils from "../utils/LogUtils";
 import { Dialog } from "../manager/DialogManager";
+import { BaseComp } from "./BaseComp";
 
 // Learn TypeScript:
 //  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
@@ -12,7 +13,7 @@ import { Dialog } from "../manager/DialogManager";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class BaseScene extends cc.Component {
+export default class BaseScene extends BaseComp {
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -21,23 +22,9 @@ export default class BaseScene extends cc.Component {
     public name:SceneEnum;
 
     /**
-     * 初始化场景
-     */
-    public init(){
-
-    }
-
-    /**
      * 切换场景动画完成
      */
     public show(){
-
-    }
-    
-    /**
-     * 主动卸载场景
-     */
-    public dispose(){
 
     }
 

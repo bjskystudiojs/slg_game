@@ -95,7 +95,8 @@ export default class LoadingScene extends BaseScene {
 
     }
 
-    public dispose() {
+    onDispose() {
+        super.onDispose();
         Emitter.off(LoadingModule.Event_Loading_TipChange, this.onTipChange.bind(this), this);
         Emitter.off(LoadingModule.Event_Loading_progress, this.onProgress.bind(this), this);
         this.btnlogin.removeAllHandler();

@@ -2,7 +2,6 @@ import DragableScene from "../core/DragableScene";
 import CityMap from "./CityMap";
 import MainUI from "../view/MainUI";
 import { Scene, LayerEnum } from "../manager/SceneManager";
-import { NodeMng } from "../manager/NodeManager";
 import { ResConst } from "../const/ResConst";
 
 const { ccclass, property } = cc._decorator;
@@ -19,7 +18,7 @@ export default class CityScene extends DragableScene {
         this._map.initMap();
 
         let uiLayer = Scene.getLayer(LayerEnum.UILayer);
-        NodeMng.spawn(ResConst.MainUI,(ui:cc.Node)=>{
+        this.loadPrefab(ResConst.MainUI,(ui:cc.Node)=>{
             this._mainUI = ui.getComponent(MainUI);
             uiLayer.addChild(ui);
         });
@@ -29,8 +28,8 @@ export default class CityScene extends DragableScene {
 
     private _mainUI:MainUI;
 
-    public dispose() {
-        super.dispose();
+    onDispose() {
+        super.onDispose();
         this._map.dispose();
         if(this._mainUI){
             this._mainUI.dispose();

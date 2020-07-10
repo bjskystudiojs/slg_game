@@ -4,7 +4,7 @@ import { Language } from "../manager/LanguageManager";
 import HotUpdater from "../utils/HotUpdater";
 import { Config } from "../manager/ConfigManager";
 import { Module } from "../manager/ModuleManager";
-import { BaseComp } from "../manager/NodeManager";
+import { BaseComp } from "../core/BaseComp";
 
 export default class LoadingModule extends BaseComp {
     public static Event_Loading_complete: string = "Event_Loading_complete";
@@ -59,17 +59,12 @@ export default class LoadingModule extends BaseComp {
         Emitter.emit(LoadingModule.Event_Loading_complete);
     }
 
-    protected tick(dt) {
-    }
 
     public update(dt) {
         super.update(dt);
         if (this._currentState) {
             this._currentState.update(dt);
         }
-    }
-
-    public dispose() {
     }
 }
 

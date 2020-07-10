@@ -66,8 +66,8 @@ export default class DragableScene extends BaseScene{
         this._mapScale = this.mapLayer.scale;
     }
     
-    public dispose(){
-        super.dispose();
+    onDispose(){
+        super.onDispose();
         this.touchDelegate.unlisten();
         this.touchDelegate.removeAllHandler();
     }

@@ -1,4 +1,4 @@
-import { BaseComp } from "../../manager/NodeManager";
+import { BaseComp } from "../../core/BaseComp";
 
 // Learn TypeScript:
 //  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
