@@ -43,7 +43,7 @@ export default class LoadingScene extends BaseScene {
         LogUtils.showTarget = true;
         LogUtils.log(this, "##gamestart!", "test")
 
-        // RES.preloadAsset(this.preloadBeans);
+        RES.preloadAsset(this.preloadBeans);
 
         this.name  = SceneEnum.LoadingScene;
         Scene.setFirstScene(this);

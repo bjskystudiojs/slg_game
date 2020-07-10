@@ -249,8 +249,8 @@ export class LoadingLoadRes extends LoadingState {
         this._module.setTip(Language.getString("loadingLoadRes", 0));
         this.progress = 0;
         this.loading = true;
-        // RES.preloadAsset(this.loadingResAtlasList, this.onProgress.bind(this), this.onComplete.bind(this));
-        this.onComplete();
+        RES.preloadAsset(this.loadingResAtlasList, this.onProgress.bind(this), this.onComplete.bind(this));
+        // this.onComplete();
     }
 
     private onProgress(cur, total) {

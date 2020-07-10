@@ -24,6 +24,6 @@ export var ResConst = {
     //atlas
     AtlasBuilding:"UI/building",
     AtlasCommon:"UI/common",
-    AtlasMainUI:"UI/building",
+    AtlasMainUI:"UI/mainui",
     AtlasXindibiao:"UI/city/xindibiao1",
 }
