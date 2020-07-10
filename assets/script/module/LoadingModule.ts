@@ -5,6 +5,8 @@ import HotUpdater from "../utils/HotUpdater";
 import { Config } from "../manager/ConfigManager";
 import { Module } from "../manager/ModuleManager";
 import { BaseComp } from "../core/BaseComp";
+import { ResConst } from "../const/ResConst";
+import { PreloadResBean, RES } from "../manager/ResourceManager";
 
 export default class LoadingModule extends BaseComp {
     public static Event_Loading_complete: string = "Event_Loading_complete";
@@ -47,7 +49,7 @@ export default class LoadingModule extends BaseComp {
             totalPro = 0.25 + pro * 0.05;
         } else if (state == LoadingStateEnum.ConnectServer) {
             totalPro = 0.3 + pro * 0.15;
-        }else if (state == LoadingStateEnum.LoadRES) {
+        } else if (state == LoadingStateEnum.LoadRES) {
             totalPro = 0.45 + pro * 0.55;
         }
         Emitter.emit(LoadingModule.Event_Loading_progress, totalPro);
@@ -233,29 +235,37 @@ export class LoadingLoadRes extends LoadingState {
         super(module);
         this.state = LoadingStateEnum.LoadRES;
     }
+
+    private loadingResAtlasList: Array<PreloadResBean> = [
+        new PreloadResBean(ResConst.AtlasBuilding, cc.SpriteAtlas),
+        new PreloadResBean(ResConst.AtlasCommon, cc.SpriteAtlas),
+        new PreloadResBean(ResConst.AtlasMainUI, cc.SpriteAtlas),
+        new PreloadResBean(ResConst.AtlasXindibiao, cc.SpriteAtlas)
+    ]
+
     private progress: number = 0;
     private loading: boolean = false;
     public enter() {
         this._module.setTip(Language.getString("loadingLoadRes", 0));
         this.progress = 0;
         this.loading = true;
+        // RES.preloadAsset(this.loadingResAtlasList, this.onProgress.bind(this), this.onComplete.bind(this));
+        this.onComplete();
     }
 
-    public update(dt) {
-        if (this.loading) {
-            this.progress++;
-            if (this.progress > 100) {
-                this.progress = 100;
-                this.loadComplete();
-            }else{
-                this._module.setTip(Language.getString("loadingLoadRes", this.progress));
-                this.setProgress(this.progress);
-            }
+    private onProgress(cur, total) {
+        this.progress = 100 * cur / total;
+        if (this.progress > 100) {
+            this.progress = 100;
         }
+        this._module.setTip(Language.getString("loadingLoadRes", ~~this.progress));
+        this.setProgress(this.progress);
     }
-
-    private loadComplete() {
+    private onComplete() {
+        this.progress = 100;
+        this.loading = false;
         this._module.loadComplete();
+
     }
 
 }

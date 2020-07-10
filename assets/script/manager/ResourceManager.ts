@@ -5,25 +5,29 @@ import { SceneEnum } from "./SceneManager";
 /**
  * 资源管理 by liuxin
  */
-export default class ResourceManager{
+export default class ResourceManager {
 
-    private static _instance:ResourceManager;
-    public static getInstance():ResourceManager{
-        if(!this._instance){
+    private static _instance: ResourceManager;
+    public static getInstance(): ResourceManager {
+        if (!this._instance) {
             this._instance = new ResourceManager();
         }
         return this._instance;
     }
     //资源计数
-    private persist: {[index:string]: number}={};
+    private persist: { [index: string]: number } = {};
 
+    private preloadBeans: Array<PreloadResBean> = [];
+    private preloadTotalCount: number = 0;
+    private preloadProgress:Function = null;
+    private preloadComplete:Function = null;
 
     /** 对asset所关联的资源进行计数 */
-    private countAsset(asset):void{
-        if(asset instanceof cc.Prefab ||asset instanceof cc.SpriteFrame
-            ||asset instanceof cc.AnimationClip 
-            ){
-                asset.addRef();
+    private countAsset(asset): void {
+        if (asset instanceof cc.Prefab || asset instanceof cc.SpriteFrame
+            || asset instanceof cc.AnimationClip
+        ) {
+            asset.addRef();
             // var deps = cc.loader.getDependsRecursively(asset);
             // let self = this;
             // for (let index = 0; index < deps.length; index++) {
@@ -43,7 +47,7 @@ export default class ResourceManager{
      * 切换场景的时候底层已经做了增加引用
      * @param scene 
      */
-    public countSceneAsset(scene:cc.Scene){
+    public countSceneAsset(scene: cc.Scene) {
         // let deps = scene['dependAssets'];
         // if(!deps) return;
         // for (var i = 0; i < deps.length; ++i) {
@@ -58,18 +62,17 @@ export default class ResourceManager{
         // }
     }
 
-    public loadAsset(path:string,type:typeof cc.Asset,cb:Function):any{
-        let res:any = cc.resources.get(path, type);
-        if(res){
+    public loadAsset(path: string, type: typeof cc.Asset, cb: Function): any {
+        let res: any = cc.resources.get(path, type);
+        if (res) {
             this.countAsset(res);
             cb && cb(res);
             return;
         }
-        cc.resources.load(path, type, (err:any, res:any):void=>{
-            if(err)
-            {
+        cc.resources.load(path, type, (err: any, res: any): void => {
+            if (err) {
                 cc.warn("[ResourceManager]loadAsset error", path);
-                cb && cb(null,err);
+                cb && cb(null, err);
                 return;
             }
             this.countAsset(res);
@@ -77,10 +80,33 @@ export default class ResourceManager{
         });
     }
 
-    public loadScene(sceneName:SceneEnum,cb:Function){
-        cc.director.loadScene(sceneName,(err, scene)=>{
-            if(err){
-                LogUtils.error(this,"loadScene failed,message:"+err.message);
+    public preloadAsset(beans: Array<PreloadResBean>, onProgress?: Function, onComplete?: Function) {
+        this.preloadBeans = this.preloadBeans.concat(beans);
+        this.preloadTotalCount += beans.length;
+        this.preloadProgress = onProgress;
+        this.preloadComplete = onComplete;
+        this.preloadNext();
+    }
+
+    private preloadNext(){
+        if(this.preloadBeans.length>0){
+            let bean = this.preloadBeans.shift();
+            cc.resources.preload(bean.path,bean.asset,()=>{
+                let cur = this.preloadTotalCount-this.preloadBeans.length;
+                this.preloadProgress && this.preloadProgress(cur,this.preloadTotalCount);
+                LogUtils.log(this,"preload bean finish:"+bean.path);
+                this.preloadNext();
+            })
+        }else{
+            this.preloadTotalCount = 0;
+            this.preloadComplete && this.preloadComplete()
+        }
+    }
+
+    public loadScene(sceneName: SceneEnum, cb: Function) {
+        cc.director.loadScene(sceneName, (err, scene) => {
+            if (err) {
+                LogUtils.error(this, "loadScene failed,message:" + err.message);
                 return;
             }
             this.countSceneAsset(scene);
@@ -88,7 +114,7 @@ export default class ResourceManager{
         });
     }
 
-    public releaseSceneAsset(deps:any){
+    public releaseSceneAsset(deps: any) {
         // for (let i = 0; i < deps.length; ++i) {
         //     var persistDep = this.persist[deps[i]];
         //     if(!persistDep || --persistDep < 1) {
@@ -98,7 +124,7 @@ export default class ResourceManager{
         //     }
         //     this.persist[deps[i]]=persistDep;
         // }
-        
+
     }
 
     /**
@@ -106,11 +132,11 @@ export default class ResourceManager{
      * @param res 
      */
     private releaseRes(asset) {
-        if(asset instanceof cc.Prefab ||asset instanceof cc.SpriteFrame
-            ||asset instanceof cc.AnimationClip 
-            ){
-                asset.decRef();
-                asset = null;
+        if (asset instanceof cc.Prefab || asset instanceof cc.SpriteFrame
+            || asset instanceof cc.AnimationClip
+        ) {
+            asset.decRef();
+            asset = null;
         }
         // var deps = cc.loader.getDependsRecursively(res);
         // for (let i = 0; i < deps.length; ++i) {
@@ -122,55 +148,66 @@ export default class ResourceManager{
         //     }
         //     this.persist[deps[i]]=persistDep;
         // }
-        
+
     }
 
     /**
      * 释放资源
      * @param urlOrAssetOrNode 
      */
-    release(urlOrAssetOrNode:any):void
-    {
-        if(urlOrAssetOrNode instanceof cc.Node)
-        {
+    release(urlOrAssetOrNode: any): void {
+        if (urlOrAssetOrNode instanceof cc.Node) {
             //释放节点,从场景上移除
             urlOrAssetOrNode.destroy();
         }
         // native instanceof extends invalid ? :w_l_hikaru
-        else if(urlOrAssetOrNode instanceof cc.Asset || urlOrAssetOrNode instanceof cc.SpriteFrame || urlOrAssetOrNode instanceof cc.Prefab
-        || urlOrAssetOrNode instanceof cc.AnimationClip)
-        {
+        else if (urlOrAssetOrNode instanceof cc.Asset || urlOrAssetOrNode instanceof cc.SpriteFrame || urlOrAssetOrNode instanceof cc.Prefab
+            || urlOrAssetOrNode instanceof cc.AnimationClip) {
             this.releaseRes(urlOrAssetOrNode);
-            
+
         }
-        else if (isString(urlOrAssetOrNode)){
+        else if (isString(urlOrAssetOrNode)) {
             let prefab = cc.resources.get(urlOrAssetOrNode);
-            if(prefab)
+            if (prefab)
                 this.releaseRes(prefab);
         }
-        else
-        {
+        else {
             let asset = cc.resources.get(urlOrAssetOrNode);
-            if(asset){
+            if (asset) {
                 this.releaseRes(asset);
             }
-            
+
         }
     }
 
-    public dump():void{
-        let str:string = "******** RES dump ********";
-        LogUtils.log(this,str);
-        let count:number = 0;
-        cc.assetManager.assets.forEach((asset,key)=>{
-            if(asset.refCount>0){
-                LogUtils.log(this,'key:'+key+',count:'+asset.refCount+'');
-                count+= asset.refCount;
+    public dump(): void {
+        let str: string = "******** RES dump ********";
+        LogUtils.log(this, str);
+        let count: number = 0;
+        cc.assetManager.assets.forEach((asset, key) => {
+            if (asset.refCount > 0) {
+                LogUtils.log(this, 'key:' + key + ',count:' + asset.refCount + '');
+                count += asset.refCount;
             }
         })
-        LogUtils.log(this,'******** total:'+count+'');
+        LogUtils.log(this, '******** total:' + count + '');
     }
-    
+
+}
+
+
+/**
+ * 预加载资源定义
+ */
+export class PreloadResBean {
+
+    constructor(path:string,asset:any){
+        this.path = path;
+        this.asset = asset;
+    }
+
+    public path: string = "";
+    public asset: any = null;
 }
 
 export var RES = ResourceManager.getInstance();

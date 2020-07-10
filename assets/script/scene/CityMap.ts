@@ -43,17 +43,16 @@ export default class CityMap extends BaseComp{
         this.buildCount = Object.keys(buildingData).length;
         for(var id in buildingData){
             let bid = Number(id);
+            let data = buildingData[bid];
             this.loadPrefab(ResConst.BuildingNode,(node:cc.Node)=>{
                 this.layerBuilding.addChild(node);
-                let data = buildingData[bid];
                 node.setPosition(this.logicPosToMapPos(data.pos))
                 let building:BuildingNode = node.getComponent(BuildingNode);
-                building.init(bid,data.id);
                 this.buildings.set(bid,building);
                 if(this.buildCount == this.buildings.size){
                     LogUtils.log(this,"building load finish,count:"+this.buildCount);
                 }
-            });
+            },bid,data.id);
         }
     }
 

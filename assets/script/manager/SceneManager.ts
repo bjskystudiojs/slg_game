@@ -82,6 +82,7 @@ export default class SceneManager{
                 let newSceneNt = this.currentSceneNative();
                 let scene_root = newSceneNt.children[0];
                 let newScene:BaseScene = scene_root.getComponent(BaseScene);
+                newScene.name = sceneName;
                 if(newScene){
                     this.currentScene = newScene;
                     newScene.init();

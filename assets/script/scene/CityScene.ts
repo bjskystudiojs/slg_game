@@ -8,20 +8,22 @@ const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class CityScene extends DragableScene {
+    @property(cc.Node)
+    uiLayer:cc.Node = null;
+
     public init() {
         super.init();
 
         this._map = this.mapLayer.getComponent(CityMap);
-        if (!this._map) {
-            this._map = this.mapLayer.addComponent(CityMap);
-        }
         this._map.initMap();
 
-        let uiLayer = Scene.getLayer(LayerEnum.UILayer);
-        this.loadPrefab(ResConst.MainUI,(ui:cc.Node)=>{
-            this._mainUI = ui.getComponent(MainUI);
-            uiLayer.addChild(ui);
-        });
+        // let uiLayer = Scene.getLayer(LayerEnum.UILayer);
+        // this.loadPrefab(ResConst.MainUI,(ui:cc.Node)=>{
+        //     this._mainUI = ui.getComponent(MainUI);
+        //     uiLayer.addChild(ui);
+        // });
+        this._mainUI = this.uiLayer.getComponent(MainUI);
+        this._mainUI.init();
     }
 
     private _map: CityMap;

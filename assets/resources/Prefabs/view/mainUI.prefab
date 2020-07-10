@@ -241,7 +241,7 @@
   },
   {
     "__type__": "cc.Sprite",
-    "_name": "",
+    "_name": "headiconbg<Sprite>",
     "_objFlags": 0,
     "node": {
       "__id__": 3
@@ -350,7 +350,7 @@
   },
   {
     "__type__": "cc.Sprite",
-    "_name": "",
+    "_name": "000005<Sprite>",
     "_objFlags": 0,
     "node": {
       "__id__": 6
@@ -459,7 +459,7 @@
   },
   {
     "__type__": "cc.Sprite",
-    "_name": "",
+    "_name": "bg_renkou<Sprite>",
     "_objFlags": 0,
     "node": {
       "__id__": 9
@@ -568,7 +568,7 @@
   },
   {
     "__type__": "cc.Sprite",
-    "_name": "",
+    "_name": "img_zuanshi<Sprite>",
     "_objFlags": 0,
     "node": {
       "__id__": 12
@@ -677,7 +677,7 @@
   },
   {
     "__type__": "cc.Sprite",
-    "_name": "",
+    "_name": "img_zhanli<Sprite>",
     "_objFlags": 0,
     "node": {
       "__id__": 15
@@ -747,7 +747,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 111.23,
+      "width": 88.98,
       "height": 50.4
     },
     "_anchorPoint": {
@@ -786,7 +786,7 @@
   },
   {
     "__type__": "cc.Label",
-    "_name": "",
+    "_name": "labelPower<Label>",
     "_objFlags": 0,
     "node": {
       "__id__": 18
@@ -800,8 +800,8 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_useOriginalSize": false,
-    "_string": "66666",
-    "_N$string": "66666",
+    "_string": "5555",
+    "_N$string": "5555",
     "_fontSize": 40,
     "_lineHeight": 40,
     "_enableWrapText": true,
@@ -895,7 +895,7 @@
   },
   {
     "__type__": "cc.Label",
-    "_name": "",
+    "_name": "labelPeople<Label>",
     "_objFlags": 0,
     "node": {
       "__id__": 21
@@ -1285,7 +1285,7 @@
   },
   {
     "__type__": "cc.Sprite",
-    "_name": "",
+    "_name": "bg_bottom<Sprite>",
     "_objFlags": 0,
     "node": {
       "__id__": 31
@@ -1394,7 +1394,7 @@
   },
   {
     "__type__": "cc.Sprite",
-    "_name": "",
+    "_name": "bg_chat<Sprite>",
     "_objFlags": 0,
     "node": {
       "__id__": 34
@@ -1503,7 +1503,7 @@
   },
   {
     "__type__": "cc.Sprite",
-    "_name": "",
+    "_name": "btn_chat<Sprite>",
     "_objFlags": 0,
     "node": {
       "__id__": 37
@@ -1612,7 +1612,7 @@
   },
   {
     "__type__": "cc.Label",
-    "_name": "",
+    "_name": "labelChat<Label>",
     "_objFlags": 0,
     "node": {
       "__id__": 40
@@ -1724,7 +1724,7 @@
   },
   {
     "__type__": "cc.Sprite",
-    "_name": "",
+    "_name": "btn_world<Sprite>",
     "_objFlags": 0,
     "node": {
       "__id__": 43
@@ -1965,7 +1965,7 @@
   },
   {
     "__type__": "cc.Sprite",
-    "_name": "",
+    "_name": "img_world<Sprite>",
     "_objFlags": 0,
     "node": {
       "__id__": 48
@@ -2088,7 +2088,7 @@
   },
   {
     "__type__": "cc.Sprite",
-    "_name": "",
+    "_name": "img_beibao<Sprite>",
     "_objFlags": 0,
     "node": {
       "__id__": 52
@@ -2268,7 +2268,7 @@
   },
   {
     "__type__": "cc.Sprite",
-    "_name": "",
+    "_name": "img_hero<Sprite>",
     "_objFlags": 0,
     "node": {
       "__id__": 56
@@ -2448,7 +2448,7 @@
   },
   {
     "__type__": "cc.Sprite",
-    "_name": "",
+    "_name": "img_lianmeng<Sprite>",
     "_objFlags": 0,
     "node": {
       "__id__": 60
@@ -2628,7 +2628,7 @@
   },
   {
     "__type__": "cc.Sprite",
-    "_name": "",
+    "_name": "img_renwu<Sprite>",
     "_objFlags": 0,
     "node": {
       "__id__": 64
@@ -2808,7 +2808,7 @@
   },
   {
     "__type__": "cc.Sprite",
-    "_name": "",
+    "_name": "img_youjian<Sprite>",
     "_objFlags": 0,
     "node": {
       "__id__": 68
@@ -2988,7 +2988,7 @@
   },
   {
     "__type__": "cc.Sprite",
-    "_name": "",
+    "_name": "img_more<Sprite>",
     "_objFlags": 0,
     "node": {
       "__id__": 72

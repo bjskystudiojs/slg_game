@@ -14,11 +14,16 @@ export var ResConst = {
 
     //buidling
     BuildingNode:"Prefabs/city/buildingNode",
-    BuildingAtlas:"UI/building",
 
     //mainui
     MainUI:"Prefabs/view/mainUI",
     MainCityUI:"Prefabs/view/MainCityUI",
     MainResUI:"Prefabs/view/main/mainResUI",
-    WorldUI:"Prefabs/view/WorldUI"
+    WorldUI:"Prefabs/view/WorldUI",
+
+    //atlas
+    AtlasBuilding:"UI/building",
+    AtlasCommon:"UI/common",
+    AtlasMainUI:"UI/building",
+    AtlasXindibiao:"UI/city/xindibiao1",
 }

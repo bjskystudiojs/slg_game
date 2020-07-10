@@ -106,9 +106,9 @@ export class BaseComp extends cc.Component {
         RES.loadAsset(path, cc.Prefab, (obj) => {
             let node = cc.instantiate(obj);
             node.active = true;
-            let b = node.addComponent(BaseComp);
+            let b = node.getComponent(BaseComp) || node.addComponent(BaseComp);
             b.path = path;
-            b.init(...params)
+            b.init(...params);
             cb && cb(node);
         })
     }
@@ -136,10 +136,7 @@ export class BaseComp extends cc.Component {
      */
     public loadPrefabWithPool(pool: BasePool, path: string, cb: Function, ...params: any[]) {
         pool.requestNode(path, (node: cc.Node) => {
-            let b = node.getComponent(BaseComp);
-            if (!b) {
-                b = node.addComponent(BaseComp);
-            }
+            let b = node.getComponent(BaseComp) || node.addComponent(BaseComp);
             b.path = path;
             b.poolRef = pool;
             b.init(...params)

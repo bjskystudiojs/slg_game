@@ -11,6 +11,7 @@ import LoadingModule from "../module/LoadingModule";
 import { Module } from "../manager/ModuleManager";
 import { TouchTypeEnum } from "../core/TouchDelegate";
 import { ResConst } from "../const/ResConst";
+import { RES, PreloadResBean } from "../manager/ResourceManager";
 
 // Learn TypeScript:
 //  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
@@ -33,10 +34,16 @@ export default class LoadingScene extends BaseScene {
 
     public mLoading: LoadingModule;
 
+    private preloadBeans:Array<PreloadResBean>= [
+        new PreloadResBean(ResConst.AtlasCommon, cc.SpriteAtlas),
+    ]
+
     start() {
         LogUtils.isOpen = true;
         LogUtils.showTarget = true;
         LogUtils.log(this, "##gamestart!", "test")
+
+        // RES.preloadAsset(this.preloadBeans);
 
         this.name  = SceneEnum.LoadingScene;
         Scene.setFirstScene(this);

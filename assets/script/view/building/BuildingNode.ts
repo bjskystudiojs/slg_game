@@ -20,6 +20,7 @@ export default class BuildingNode extends BaseComp {
         this.buildingTypeId = tid;
         let cfg = Module.building.getBuildingConfig(tid);
         let spr = this.sprNode.getComponent(cc.Sprite);
-        this.loadSpriteAtlas(cfg.pic,ResConst.BuildingAtlas,spr);
+        spr.spriteFrame = null;
+        this.loadSpriteAtlas(cfg.pic,ResConst.AtlasBuilding,spr);
     }
 }
