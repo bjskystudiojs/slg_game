@@ -1084,6 +1084,11 @@
       "__id__": 2
     },
     "_enabled": true,
+    "containPrefabs": [
+      {
+        "__uuid__": "40de90fe-6466-4d87-bd88-2fe24686533b"
+      }
+    ],
     "btnlogin": {
       "__id__": 22
     },

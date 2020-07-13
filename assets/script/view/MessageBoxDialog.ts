@@ -30,7 +30,7 @@ export default class MessageBoxDialog extends PopupDialog {
 
     private _title: string = "";
     private _content: string = "";
-    public init(title: string, content: string, type: MessageBoxTypeEnum = MessageBoxTypeEnum.YesOnly) {
+    protected onInit(title: string, content: string, type: MessageBoxTypeEnum = MessageBoxTypeEnum.YesOnly) {
         this._title = title;
         this._content = content;
 

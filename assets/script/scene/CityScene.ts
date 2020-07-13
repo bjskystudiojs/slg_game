@@ -1,8 +1,6 @@
 import DragableScene from "../core/DragableScene";
 import CityMap from "./CityMap";
 import MainUI from "../view/MainUI";
-import { Scene, LayerEnum } from "../manager/SceneManager";
-import { ResConst } from "../const/ResConst";
 
 const { ccclass, property } = cc._decorator;
 
@@ -11,9 +9,8 @@ export default class CityScene extends DragableScene {
     @property(cc.Node)
     uiLayer:cc.Node = null;
 
-    public init() {
-        super.init();
-
+    onInit() {
+        super.onInit();
         this._map = this.mapLayer.getComponent(CityMap);
         this._map.initMap();
 

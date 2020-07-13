@@ -1,22 +1,37 @@
 import BasePool from "./BasePool";
 import { RES } from "../manager/ResourceManager";
 
+const {ccclass, property} = cc._decorator;
 /**
  * 基础组件 by liuxin
- * @description 统一初始化和清理接口:init/dispose、资源卸载，支持加载其他资源的方法
+ * @description 统一初始化和清理接口:onInit/onDispose、资源卸载，支持加载其他资源的方法
  */
+@ccclass
 export class BaseComp extends cc.Component {
     protected delayTime: number = 0;
     protected delayTimeForMin: number = 0;
     protected tickEnable: boolean = false;
 
+    private _initParam:any[] = [];
+    private _loaded:boolean = false;
+
     //预设路径,
     public path: string = "";
     public poolRef: BasePool = null;
 
+    /**
+     * 使用包含的预设，仅仅将预设相关的json提前加载，提高显示速度，不会作任何操作
+     */
+    @property([cc.Prefab])
+    public containPrefabs: cc.Prefab[] = [];
+    
+
     // LIFE-CYCLE CALLBACKS:
     onLoad() {
-
+        this._loaded = true;
+        if(this._initParam){
+            this.onInit.apply(this,this._initParam);
+        }
     }
 
     start() {
@@ -24,17 +39,21 @@ export class BaseComp extends cc.Component {
     }
 
     /**
-     * 初始化数据
+     * 调用初始化数据
      * @param params 参数
      */
     public init(...params) {
-
+        this._initParam = params;
+        if(this._loaded){
+            this.onInit(...params);
+        }
     }
 
     /**
-     * 重写清理组件
+     * onLoad之后的初始化
+     * @param params 
      */
-    protected onDispose() {
+    protected onInit(...params){
 
     }
 
@@ -53,6 +72,13 @@ export class BaseComp extends cc.Component {
                 this.node.destroy();
             }
         }
+    }
+
+    /**
+     * 重写清理组件
+     */
+    protected onDispose() {
+
     }
 
     onDestroy() {

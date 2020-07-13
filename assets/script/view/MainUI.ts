@@ -1,8 +1,7 @@
 import BaseButton from "../core/BaseButton";
-import MainResUI from "./main/MainResUI";
 import { BaseComp } from "../core/BaseComp";
-import { Scene, SceneEnum } from "../manager/SceneManager";
-import { ResConst } from "../const/ResConst";
+import LinkPrefab from "../core/LinkPrefab";
+import MainCityUI from "./MainCityUI";
 
 // Learn TypeScript:
 //  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
@@ -30,42 +29,25 @@ export default class MainUI extends BaseComp {
     btnOther: BaseButton = null;
     @property(BaseButton)
     btnWorld: BaseButton = null;
-    @property(cc.Node)
-    subUINode: cc.Node = null;
     @property([cc.Node])
     resUIArr: Array<cc.Node> = [];
+    @property(LinkPrefab)
+    mainCityUILink:LinkPrefab = null;
 
-
-    private _uiContentNode:cc.Node =null;
+    private _maincityUI:MainCityUI;
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
 
-
+        this._maincityUI = this.mainCityUILink.getPrefabComponect(MainCityUI);
     }
 
     start () {
 
     }
 
-    public init(){
-        //
-        let sceneType = Scene.currentScene.name;
-        let uiContentPath ="";
-        if(sceneType == SceneEnum.CityScene){
-            uiContentPath = ResConst.MainCityUI;
-        }else if(sceneType == SceneEnum.WorldScene){
-            uiContentPath = ResConst.WorldUI;
-        }
-        this.loadPrefab(uiContentPath,(node:cc.Node)=>{
-            this._uiContentNode = node;
-            this.subUINode.addChild(node);
-        })
-    }
-
     onDispose(){
         super.onDispose();
-        this._uiContentNode.getComponent(BaseComp).dispose();
     }
 
     // update (dt) {}

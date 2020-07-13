@@ -15,7 +15,7 @@ export default class BuildingNode extends BaseComp {
     public buildingId: number = 0;
     public buildingTypeId: number = 400000;
 
-    public init(bid: number, tid: number) {
+    onInit(bid: number, tid: number) {
         this.buildingId = bid;
         this.buildingTypeId = tid;
         let cfg = Module.building.getBuildingConfig(tid);

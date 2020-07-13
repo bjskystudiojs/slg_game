@@ -9,6 +9,7 @@ const { ccclass, property } = cc._decorator;
 /**
  * 可以拖拽的场景
  */
+@ccclass
 export default class DragableScene extends BaseScene{
 
     @property(cc.Node)
@@ -21,8 +22,7 @@ export default class DragableScene extends BaseScene{
     protected MAX_MAP_SCALE:number = 1.5;
     protected MIN_MAP_SCALE:number = 0.3;
 
-    public init(){
-        super.init();
+    onInit(){
         this.touchDelegate = new TouchDelegate();
         this.touchDelegate.listen(this.node);
         this.touchDelegate.addTouchHandler(TouchTypeEnum.TouchClick,this.onTouchClick.bind(this));

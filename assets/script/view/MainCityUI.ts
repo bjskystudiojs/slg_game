@@ -10,7 +10,7 @@ import { BaseComp } from "../core/BaseComp";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class NewClass extends BaseComp {
+export default class MainCityUI extends BaseComp {
 
     @property(cc.Label)
     label: cc.Label = null;
