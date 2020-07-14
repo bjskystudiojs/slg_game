@@ -22,19 +22,16 @@
       },
       {
         "__id__": 30
-      },
-      {
-        "__id__": 78
       }
     ],
     "_active": true,
     "_components": [
       {
-        "__id__": 81
+        "__id__": 78
       }
     ],
     "_prefab": {
-      "__id__": 82
+      "__id__": 79
     },
     "_opacity": 255,
     "_color": {
@@ -3138,94 +3135,6 @@
     "sync": false
   },
   {
-    "__type__": "cc.Node",
-    "_name": "maincityUINode",
-    "_objFlags": 0,
-    "_parent": {
-      "__id__": 1
-    },
-    "_children": [],
-    "_active": true,
-    "_components": [
-      {
-        "__id__": 79
-      }
-    ],
-    "_prefab": {
-      "__id__": 80
-    },
-    "_opacity": 255,
-    "_color": {
-      "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
-      "a": 255
-    },
-    "_contentSize": {
-      "__type__": "cc.Size",
-      "width": 0,
-      "height": 0
-    },
-    "_anchorPoint": {
-      "__type__": "cc.Vec2",
-      "x": 0.5,
-      "y": 0.5
-    },
-    "_trs": {
-      "__type__": "TypedArray",
-      "ctor": "Float64Array",
-      "array": [
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        1,
-        1,
-        1,
-        1
-      ]
-    },
-    "_eulerAngles": {
-      "__type__": "cc.Vec3",
-      "x": 0,
-      "y": 0,
-      "z": 0
-    },
-    "_skewX": 0,
-    "_skewY": 0,
-    "_is3DNode": false,
-    "_groupIndex": 0,
-    "groupIndex": 0,
-    "_id": ""
-  },
-  {
-    "__type__": "fda5840YjdCc5n0OTC6j+bB",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 78
-    },
-    "_enabled": true,
-    "_prefab": {
-      "__uuid__": "ea69c6de-123e-4c26-a107-493ff860fc26"
-    },
-    "_id": ""
-  },
-  {
-    "__type__": "cc.PrefabInfo",
-    "root": {
-      "__id__": 1
-    },
-    "asset": {
-      "__uuid__": "dc1b5fb7-1b53-41c4-905e-7e0344a50275"
-    },
-    "fileId": "13d9jI6E1D6aaSu9mm0M0n",
-    "sync": false
-  },
-  {
     "__type__": "00921YIzm5PNILpZdSxdhCh",
     "_name": "",
     "_objFlags": 0,
@@ -3233,6 +3142,7 @@
       "__id__": 1
     },
     "_enabled": true,
+    "containPrefabs": [],
     "btnTask": {
       "__id__": 66
     },
@@ -3255,9 +3165,7 @@
       "__id__": 45
     },
     "resUIArr": [],
-    "mainCityUILink": {
-      "__id__": 79
-    },
+    "mainCityUILink": null,
     "_id": ""
   },
   {

@@ -19,6 +19,8 @@ export default class LinkPrefab extends cc.Component {
     get prefab(): cc.Prefab {
         return this._prefab
     }
+    //是否由组件初始化
+    private _inited:boolean = false;
     private _prefabNode:cc.Node = null;
 
     private _onPrefabChanged(oldValue:cc.Prefab, newValue:cc.Prefab) {
@@ -39,7 +41,12 @@ export default class LinkPrefab extends cc.Component {
     }
 
     onLoad() {
-        this._onPrefabChanged(null, this._prefab)
+        !this._inited && this._onPrefabChanged(null, this._prefab)
+    }
+
+    init(){
+        this._onPrefabChanged(null, this._prefab);
+        this._inited = true;
     }
 
     /**

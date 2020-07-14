@@ -1,5 +1,6 @@
 import BasePool from "./BasePool";
 import { RES } from "../manager/ResourceManager";
+import LinkPrefab from "./LinkPrefab";
 
 const {ccclass, property} = cc._decorator;
 /**
@@ -44,6 +45,11 @@ export class BaseComp extends cc.Component {
      */
     public init(...params) {
         this._initParam = params;
+        //初始化链接预设
+        let links:Array<LinkPrefab> = this.getComponentsInChildren(LinkPrefab);
+        links.forEach((link:LinkPrefab)=>{
+            link.init();
+        })
         if(this._loaded){
             this.onInit(...params);
         }

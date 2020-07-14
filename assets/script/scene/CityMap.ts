@@ -57,10 +57,12 @@ export default class CityMap extends BaseComp{
     }
 
     public logicPosToMapPos(logicPos:cc.Vec2):cc.Vec2{
-        return logicPos.multiplyScalar(200);
+        let copy = logicPos.clone();
+        return copy.multiplyScalar(200);
     }
     public mapPosToLogicPos(mapPos:cc.Vec2):cc.Vec2{
-        let logicPos = mapPos.multiplyScalar(1/200);
+        let copy = mapPos.clone();
+        let logicPos = copy.multiplyScalar(1/200);
         let x = ~~(logicPos.x);
         let y = ~~(logicPos.y);
         return cc.v2(x,y)
@@ -68,10 +70,9 @@ export default class CityMap extends BaseComp{
 
     onDispose(){
         super.onDispose();
-        // this.buildings.forEach((comp:BuildingNode,id:number)=>{
-        //     comp.dispose();
-        //     comp.node.destroy();
-        // })
-        // this.buildings = null;
+        this.buildings.forEach((comp:BuildingNode,id:number)=>{
+            comp.dispose();
+        })
+        this.buildings = null;
     }
 }

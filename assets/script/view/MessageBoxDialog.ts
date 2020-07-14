@@ -4,6 +4,7 @@ import { Language } from "../manager/LanguageManager";
 import { TouchTypeEnum } from "../core/TouchDelegate";
 import { Scene } from "../manager/SceneManager";
 import LoadingScene from "../scene/LoadingScene";
+import LinkPrefab from "../core/LinkPrefab";
 
 // Learn TypeScript:
 //  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
@@ -22,11 +23,13 @@ export default class MessageBoxDialog extends PopupDialog {
     public lblTitle: cc.Label = null;
     @property(cc.Label)
     public lblText: cc.Label = null;
-    @property(BaseButton)
-    public btnYes: BaseButton = null;
-    @property(BaseButton)
-    public btnNo: BaseButton = null;
+    @property(LinkPrefab)
+    public btnYesLink: LinkPrefab = null;
+    @property(LinkPrefab)
+    public btnNoLink: LinkPrefab = null;
 
+    private btnYes:BaseButton = null;
+    private btnNo:BaseButton = null;
 
     private _title: string = "";
     private _content: string = "";
@@ -34,6 +37,7 @@ export default class MessageBoxDialog extends PopupDialog {
         this._title = title;
         this._content = content;
 
+        this.initLinkPrefabs();
         this.initDialog();
     }
 
@@ -44,10 +48,6 @@ export default class MessageBoxDialog extends PopupDialog {
 
     public touchClick() {
 
-        // let title:string  = Language.getString("tipTitle")
-        // let content:string = Language.getString("tipContentTest","test");
-        // Dialog.showDialog(ResConst.MessageBoxDialog, title, content);
-
         var scene = Scene.currentScene as LoadingScene;
         if (scene && scene.mLoading) {
             scene.mLoading.startLoading();
@@ -56,6 +56,11 @@ export default class MessageBoxDialog extends PopupDialog {
     }
     public touchClose(){
         this.close();
+    }
+
+    private initLinkPrefabs(){
+        this.btnYes = this.btnYesLink.getPrefabComponect(BaseButton);
+        this.btnNo = this.btnNoLink.getPrefabComponect(BaseButton);
     }
 
     public initDialog() {

@@ -1,7 +1,7 @@
 import BaseButton from "../core/BaseButton";
 import { BaseComp } from "../core/BaseComp";
-import LinkPrefab from "../core/LinkPrefab";
-import MainCityUI from "./MainCityUI";
+import { TouchTypeEnum } from "../core/TouchDelegate";
+import { Scene, SceneEnum } from "../manager/SceneManager";
 
 // Learn TypeScript:
 //  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
@@ -31,15 +31,18 @@ export default class MainUI extends BaseComp {
     btnWorld: BaseButton = null;
     @property([cc.Node])
     resUIArr: Array<cc.Node> = [];
-    @property(LinkPrefab)
-    mainCityUILink:LinkPrefab = null;
-
-    private _maincityUI:MainCityUI;
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
+        this.btnWorld.addTouchHandler(TouchTypeEnum.TouchClick,this.onWorldClick.bind(this));
+    }
 
-        this._maincityUI = this.mainCityUILink.getPrefabComponect(MainCityUI);
+    private onWorldClick(){
+        if(Scene.currentScene.name == SceneEnum.CityScene){
+            Scene.changeTo(SceneEnum.WorldScene);
+        }else if(Scene.currentScene.name == SceneEnum.WorldScene){
+            Scene.changeTo(SceneEnum.CityScene);
+        }
     }
 
     start () {
