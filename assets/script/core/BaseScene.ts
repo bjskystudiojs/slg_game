@@ -17,7 +17,12 @@ export default class BaseScene extends BaseComp {
 
     // LIFE-CYCLE CALLBACKS:
 
-    // onLoad () {}
+    onLoad () {
+        super.onLoad();
+        //设置适配策略
+        this.setPortrait();
+
+    }
 
     public name:SceneEnum;
 
@@ -33,6 +38,21 @@ export default class BaseScene extends BaseComp {
         Dialog.dumpPool();
         Dialog.clearPool();
         LogUtils.log(this,"scene onDestoryed:pool clear");
+    }
+
+    private setPortrait(){
+        let cavas: cc.Canvas = this.node.getComponent(cc.Canvas);
+        //frame 尺寸
+        let f_width = cc.view.getFrameSize().width;
+        let f_height = cc.view.getFrameSize().height;
+        //设计分辨率
+        let d_width = cavas.designResolution.width;
+        let d_height = cavas.designResolution.height;
+        //屏幕尺寸
+        let winSize = cc.winSize;
+        LogUtils.log(this,'-----web0-----', cc.sys.isBrowser, cc.sys.isMobile, cc.sys.isNative, d_width, d_height);
+        LogUtils.log(this,'-----web1-----', f_width, f_height, winSize.width, winSize.height);
+
     }
 
     // update (dt) {}

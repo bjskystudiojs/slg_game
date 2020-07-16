@@ -2,6 +2,7 @@ import BaseButton from "../core/BaseButton";
 import { BaseComp } from "../core/BaseComp";
 import { TouchTypeEnum } from "../core/TouchDelegate";
 import { Scene, SceneEnum } from "../manager/SceneManager";
+import LinkPrefab from "../core/LinkPrefab";
 
 // Learn TypeScript:
 //  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
@@ -33,7 +34,7 @@ export default class MainUI extends BaseComp {
     resUIArr: Array<cc.Node> = [];
     // LIFE-CYCLE CALLBACKS:
 
-    onLoad () {
+    onInit () {
         this.btnWorld.addTouchHandler(TouchTypeEnum.TouchClick,this.onWorldClick.bind(this));
     }
 

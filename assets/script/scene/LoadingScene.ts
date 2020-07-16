@@ -12,6 +12,7 @@ import { Module } from "../manager/ModuleManager";
 import { TouchTypeEnum } from "../core/TouchDelegate";
 import { ResConst } from "../const/ResConst";
 import { RES, PreloadResBean } from "../manager/ResourceManager";
+import LinkPrefab from "../core/LinkPrefab";
 
 // Learn TypeScript:
 //  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
@@ -25,24 +26,28 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class LoadingScene extends BaseScene {
 
-    @property(BaseButton)
-    btnlogin: BaseButton = null;
+    @property(LinkPrefab)
+    btnloginLink: LinkPrefab = null;
     @property(cc.Label)
     lblLoadingTip: cc.Label = null;
     @property(cc.ProgressBar)
     proLoading: cc.ProgressBar = null;
 
     public mLoading: LoadingModule;
+    private btnLogin:BaseButton = null;
 
     private preloadBeans:Array<PreloadResBean>= [
         new PreloadResBean(ResConst.AtlasCommon, cc.SpriteAtlas),
     ]
-
-    start() {
+    onLoad(){
         LogUtils.isOpen = true;
         LogUtils.showTarget = true;
         LogUtils.log(this, "##gamestart!", "test")
+        super.onLoad();
+    }
 
+    start() {
+        
         RES.preloadAsset(this.preloadBeans);
 
         this.name  = SceneEnum.LoadingScene;
@@ -63,15 +68,17 @@ export default class LoadingScene extends BaseScene {
         Emitter.on(LoadingModule.Event_Loading_progress, this.onProgress.bind(this), this);
         //加个加载逻辑组件
         this.mLoading = this.node.addComponent(LoadingModule);
-        this.btnlogin.node.active = false;
+
+        this.btnLogin = this.btnloginLink.getPrefabComponect(BaseButton);
+        this.btnLogin.node.active = false;
         this.lblLoadingTip.string = "";
         this.proLoading.progress = 0;
     }
     private startGame() {
         Emitter.off(LanguageManager.Event_Language_Loaded, this.startGame.bind(this), this);
-        this.btnlogin.node.active = true;
-        this.btnlogin.setString(Language.getString("loginBtn"));
-        this.btnlogin.addTouchHandler(TouchTypeEnum.TouchClick,this.onBtnLoginClick.bind(this));
+        this.btnLogin.node.active = true;
+        this.btnLogin.setString(Language.getString("loginBtn"));
+        this.btnLogin.addTouchHandler(TouchTypeEnum.TouchClick,this.onBtnLoginClick.bind(this));
     }
 
     //进入主场景
@@ -106,6 +113,6 @@ export default class LoadingScene extends BaseScene {
         super.onDispose();
         Emitter.off(LoadingModule.Event_Loading_TipChange, this.onTipChange.bind(this), this);
         Emitter.off(LoadingModule.Event_Loading_progress, this.onProgress.bind(this), this);
-        this.btnlogin.removeAllHandler();
+        this.btnLogin.removeAllHandler();
     }
 }
