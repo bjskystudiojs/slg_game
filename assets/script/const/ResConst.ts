@@ -11,6 +11,7 @@ export var ResConst = {
     
     //views
     MessageBoxDialog:"Prefabs/view/MessageBoxDialog",
+    ConstructDialog:"Prefabs/view/construct/constructDialog",
 
     //buidling
     BuildingNode:"Prefabs/city/buildingNode",

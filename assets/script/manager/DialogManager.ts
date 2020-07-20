@@ -101,7 +101,7 @@ export default class DialogManager{
      * 移除所有弹窗
      */
     public removeAll(){
-        while(this._dialogStack.length>1){
+        while(this._dialogStack.length>0){
             let dialog:BaseDialog = this._dialogStack.pop();
             dialog.dispose();
         }
@@ -115,7 +115,7 @@ export default class DialogManager{
         this._maskLayer.name = "mask";
         this._maskLayer.color = new cc.Color().fromHEX('#000000');
         this._maskLayer.opacity = 100;
-        this._maskLayer.setContentSize(640,1134);
+        this._maskLayer.setContentSize(cc.winSize);
         var maskSpr:cc.Sprite = this._maskLayer.addComponent(cc.Sprite);
         maskSpr.sizeMode = cc.Sprite.SizeMode.CUSTOM;
         RES.loadAsset(ResConst.Default_Splash_Sprite,cc.SpriteFrame,(res)=>{

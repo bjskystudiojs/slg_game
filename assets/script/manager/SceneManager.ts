@@ -50,17 +50,26 @@ export default class SceneManager{
 
         //初始化层
         let uiLayer:cc.Node = new cc.Node();
+        this.addWidget(uiLayer);
         this._rootNode.addChild(uiLayer);
         this._layers[LayerEnum.UILayer] = uiLayer;
         let dialogLayer:cc.Node = new cc.Node();
+        this.addWidget(dialogLayer);
         this._rootNode.addChild(dialogLayer);
         this._layers[LayerEnum.DialogLayer] = dialogLayer;
         let tipLayer:cc.Node = new cc.Node();
+        this.addWidget(tipLayer);
         this._rootNode.addChild(tipLayer);
         this._layers[LayerEnum.TipLayer] = tipLayer;
         let guideLayer:cc.Node = new cc.Node();
+        this.addWidget(guideLayer);
         this._rootNode.addChild(guideLayer);
         this._layers[LayerEnum.GuideLayer] = guideLayer;
+    }
+    private addWidget(node:cc.Node){
+        node.setContentSize(cc.winSize);
+        let widget:cc.Widget = node.getComponent(cc.Widget) || node.addComponent(cc.Widget);
+        widget.left = widget.right = widget.top = widget.bottom = 0;  
     }
 
     /**

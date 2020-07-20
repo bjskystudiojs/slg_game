@@ -3,6 +3,8 @@ import { BaseComp } from "../core/BaseComp";
 import { TouchTypeEnum } from "../core/TouchDelegate";
 import { Scene, SceneEnum } from "../manager/SceneManager";
 import LinkPrefab from "../core/LinkPrefab";
+import { Dialog } from "../manager/DialogManager";
+import { ResConst } from "../const/ResConst";
 
 // Learn TypeScript:
 //  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
@@ -36,6 +38,7 @@ export default class MainUI extends BaseComp {
 
     onInit () {
         this.btnWorld.addTouchHandler(TouchTypeEnum.TouchClick,this.onWorldClick.bind(this));
+        this.btnTask.addTouchHandler(TouchTypeEnum.TouchClick,this.onBtnTaskClick.bind(this));
     }
 
     private onWorldClick(){
@@ -44,6 +47,10 @@ export default class MainUI extends BaseComp {
         }else if(Scene.currentScene.name == SceneEnum.WorldScene){
             Scene.changeTo(SceneEnum.CityScene);
         }
+    }
+
+    private onBtnTaskClick(){
+        Dialog.showDialog(ResConst.ConstructDialog);
     }
 
     start () {

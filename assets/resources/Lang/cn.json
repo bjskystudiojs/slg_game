@@ -9,5 +9,6 @@
     "loadingUpdateGame":"下载更新中({0}%)",
     "loadingConnectServer":"连接服务器",
     "loadingLoadRes":"加载资源中({0}%)",
-    "loadingConfig":"加载配置"
+    "loadingConfig":"加载配置",
+    "ConstructTitle":"建造部队"
 }
